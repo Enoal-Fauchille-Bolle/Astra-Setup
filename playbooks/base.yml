@@ -1,0 +1,16 @@
+- name: Bootstrap server as root
+  hosts: all
+  remote_user: root
+  vars:
+    ansible_user: root
+  gather_facts: false
+  become: false
+  roles:
+    - { role: base/bootstrap, tags: [base, bootstrap] }
+
+- name: Configure server as deploy
+  hosts: all
+  remote_user: deploy
+  become: true
+  gather_facts: true
+

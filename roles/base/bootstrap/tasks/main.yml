@@ -1,0 +1,30 @@
+- name: Ensure 'deploy' user exists
+  ansible.builtin.user:
+    name: deploy
+    shell: /bin/bash
+    groups: sudo
+    state: present
+
+- name: Allow 'deploy' to sudo without password
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/deploy
+    content: "deploy ALL=(ALL) NOPASSWD:ALL\n"
+    mode: '0440'
+
+- name: Create .ssh directory in the deploy user's home
+  file:
+    path: /home/deploy/.ssh
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: '0700'
+
+- name: Copy authorized_keys from root to deploy user's .ssh directory
+  copy:
+    src: /root/.ssh/authorized_keys
+    dest: /home/deploy/.ssh/authorized_keys
+    owner: deploy
+    group: deploy
+    mode: '0600'
+    remote_src: yes
+  notify: Restart SSH service
