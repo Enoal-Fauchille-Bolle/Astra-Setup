@@ -1,0 +1,37 @@
+- name: Create the user account
+  user:
+    name: "{{ user_name }}"
+    password: "{{ user_password_hashed }}"
+    state: present
+    groups: sudo
+    append: yes
+  become: true
+
+- name: Ensure home directory for user exists
+  file:
+    path: "/home/{{ user_name }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
+  become: true
+
+- name: Create .ssh directory in the user's home
+  file:
+    path: "/home/{{ user_name }}/.ssh"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0700'
+  become: true
+
+- name: Copy authorized_keys from root to user's .ssh directory
+  copy:
+    src: /root/.ssh/authorized_keys
+    dest: "/home/{{ user_name }}/.ssh/authorized_keys"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0600'
+    remote_src: yes
+  become: true
+  notify: Restart SSH service

@@ -24,3 +24,8 @@
   roles:
     - { role: base/settings, tags: [base, settings] }
 
+- name: Setup user
+  hosts: all
+  roles:
+    - { role: base/user, tags: [base, user] }
+

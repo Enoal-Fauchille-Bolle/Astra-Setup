@@ -6,3 +6,8 @@ hostname: astra
 swappiness: 60
 file_max: 100000
 
+# User setup
+user_name: azerty
+user_password_hashed: $1$KTXt8rGI$XMlF2DHMU2cFwHaPQNLhI0
+# See the documentation to generate a password hash
+
