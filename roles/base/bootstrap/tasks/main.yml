@@ -28,3 +28,10 @@
     mode: '0600'
     remote_src: yes
   notify: Restart SSH service
+
+- name: Prepare Ansible remote_tmp for non-root user
+  file:
+    path: /tmp/ansible_tmp
+    state: directory
+    mode: '1777'
+
