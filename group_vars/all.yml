@@ -27,3 +27,10 @@ zsh_aliases:
   - alias refresh-rc="source ~/.zshrc"
   - alias op="chmod u+x"
   - alias ll="ls -la"
+
+############################# Monitoring & Logs #############################
+
+# Glances
+glances_directory: /opt/glances
+glances_version: latest-full
+glances_port: 61208

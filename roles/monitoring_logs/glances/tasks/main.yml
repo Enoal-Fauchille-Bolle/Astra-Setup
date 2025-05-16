@@ -1,0 +1,37 @@
+- name: Create glances directory
+  file:
+    path: "{{ glances_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Glances port through UFW
+  ufw:
+    rule: allow
+    port: "{{ glances_port | default('61208') }}"
+    proto: tcp
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ glances_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Glances
+  become: true
+
+- name: Import Glances service
+  template:
+    src: "{{ role_path }}/files/glances.service.j2"
+    dest: "/etc/systemd/system/glances.service"
+    mode: '0644'
+  notify: Restart Glances
+  become: true
+
+- name: Enable and start Glances service
+  systemd:
+    daemon_reload: true
+    name: glances
+    enabled: true
+    state: started
+  become: true

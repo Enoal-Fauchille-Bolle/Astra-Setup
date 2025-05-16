@@ -1,0 +1,15 @@
+services:
+  glances:
+    image: nicolargo/glances:{{ glances_version }}
+    container_name: glances
+    restart: always
+    ports:
+      - "{{ glances_port }}:61208"
+      - "{{ (glances_port | int) + 1 }}:61209"
+    environment:
+      - TZ=${TZ}
+      - GLANCES_OPT=-w
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock:ro
+    pid: "host"

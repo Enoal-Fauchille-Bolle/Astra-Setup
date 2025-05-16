@@ -1,0 +1,3 @@
+glances_directory: /opt/glances
+glances_version: latest-full
+glances_port: 61208

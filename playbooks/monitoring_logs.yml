@@ -1,0 +1,4 @@
+- name: Glances
+  hosts: all
+  roles:
+    - { role: monitoring_logs/glances, tags: [monitoring_logs, glances] }

@@ -1,1 +1,2 @@
 - import_playbook: base.yml
+- import_playbook: monitoring_logs.yml

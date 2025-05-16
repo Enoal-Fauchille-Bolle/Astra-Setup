@@ -1,0 +1,5 @@
+- name: Restart Glances
+  service:
+    name: glances
+    state: restarted
+  become: true
