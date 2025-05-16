@@ -2,14 +2,14 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
+  become: true
 
 - name: Upgrade the system
-  become: true
   apt:
     upgrade: dist
+  become: true
 
 - name: Install essential packages
-  become: true
   apt:
     name:
       - apt-transport-https
