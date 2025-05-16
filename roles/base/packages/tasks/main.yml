@@ -32,3 +32,15 @@
       - gnupg
       - software-properties-common
     state: present
+  become: true
+
+- name: Allow SSH traffic
+  ufw:
+    rule: allow
+    name: OpenSSH
+  become: true
+
+- name: Enable UFW firewall
+  ufw:
+    state: enabled
+  become: true
