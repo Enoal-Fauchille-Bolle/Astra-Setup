@@ -24,12 +24,7 @@
     group: "{{ user_name }}"
     mode: '0755'
   become: true
-  loop:
-    - Scripts
-    - Softwares
-    - Backups
-    - Github
-    - Documents
+  loop: "{{ user_directories }}"
 
 #################################### SSH ####################################
 

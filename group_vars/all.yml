@@ -10,6 +10,12 @@ file_max: 100000
 user_name: azerty
 user_password_hashed: $1$KTXt8rGI$XMlF2DHMU2cFwHaPQNLhI0
 # See the documentation to generate a password hash
+user_directories:
+  - Scripts
+  - Softwares
+  - Backups
+  - Github
+  - Documents
 
 # Shell
 motd_disable: true
