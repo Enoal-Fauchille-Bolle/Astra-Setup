@@ -34,3 +34,7 @@
   roles:
     - { role: base/shell, tags: [base, shell] }
 
+- name: Import Scripts
+  hosts: all
+  roles:
+    - { role: base/scripts, tags: [base, scripts] }

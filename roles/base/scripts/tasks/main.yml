@@ -1,0 +1,41 @@
+############################ Import Basic Scripts ############################
+
+- name: Import Basic Scripts
+  copy:
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "/home/{{ user_name }}/{{ scripts_dir }}/{{ item }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
+  with_items:
+    - coding-style
+    - cpu-usage.sh
+    - docker-usage.sh
+    - unused-docker-images.sh
+  become: true
+
+################################## BananaPy ##################################
+
+- name: Clone BananaPy
+  git:
+    repo: https://github.com/Enoal-Fauchille-Bolle/BananaPy.git
+    dest: "/home/{{ user_name }}/{{ softwares_dir }}/BananaPy"
+    version: main
+    update: no
+  become: true
+
+- name: Set permissions for BananaPy
+  file:
+    path: "/home/{{ user_name }}/{{ softwares_dir }}/BananaPy"
+    recurse: yes
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  become: true
+
+- name: Create symbolic link for bananapy
+  file:
+    src: "/home/{{ user_name }}/{{ softwares_dir }}/BananaPy/bananapy"
+    dest: "/home/{{ user_name }}/{{ softwares_dir }}/bananapy"
+    state: link
+  become: true
+
