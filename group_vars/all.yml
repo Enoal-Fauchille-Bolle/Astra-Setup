@@ -1,0 +1,8 @@
+#################################### Base ####################################
+
+# Linux settings
+timezone: Europe/Paris
+hostname: astra
+swappiness: 60
+file_max: 100000
+
