@@ -32,8 +32,8 @@ source $ZSH/oh-my-zsh.sh
 ############################# User Paths ###############################
 
 # Add personal software and scripts directories to PATH
-export PATH=$PATH:/home/{{ user_name }}/Softwares
-export PATH=$PATH:/home/{{ user_name }}/Scripts
+export PATH=$PATH:/home/{{ user_name }}/{{ scripts_dir }}
+export PATH=$PATH:/home/{{ user_name }}/{{ softwares_dir }}
 
 ########################### Node Version Manager ########################
 

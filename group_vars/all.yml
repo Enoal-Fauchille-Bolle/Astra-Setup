@@ -16,6 +16,8 @@ user_directories:
   - Backups
   - Github
   - Documents
+scripts_dir: Scripts
+softwares_dir: Softwares
 
 # Shell
 motd_disable: true
