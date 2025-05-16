@@ -29,3 +29,8 @@
   roles:
     - { role: base/user, tags: [base, user] }
 
+- name: Configure Shell
+  hosts: all
+  roles:
+    - { role: base/shell, tags: [base, shell] }
+

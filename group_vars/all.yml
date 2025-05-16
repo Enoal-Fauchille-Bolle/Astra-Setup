@@ -11,3 +11,11 @@ user_name: azerty
 user_password_hashed: $1$KTXt8rGI$XMlF2DHMU2cFwHaPQNLhI0
 # See the documentation to generate a password hash
 
+# Shell
+motd_disable: true
+zsh_aliases:
+  - alias cl=clear
+  - alias edit-rc="nano ~/.zshrc"
+  - alias refresh-rc="source ~/.zshrc"
+  - alias op="chmod u+x"
+  - alias ll="ls -la"

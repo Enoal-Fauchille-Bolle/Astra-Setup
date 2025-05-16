@@ -1,0 +1,53 @@
+############################# Instant Prompt #############################
+
+# Enable Powerlevel10k instant prompt for lightning-fast prompt rendering.
+# Loads the generated preamble from cache if available.
+# Must be at the very top to avoid any console I/O before the prompt.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+########################### Oh My Zsh Core ###############################
+
+# Define path to Oh My Zsh installation and ensure ~/.local/bin is in PATH.
+export ZSH="$HOME/.oh-my-zsh"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Set the Powerlevel10k theme installed under custom/themes/
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# List of plugins to load at shell startup
+plugins=(
+  git                          # Git integration: status, branch info, completions
+  zsh-autosuggestions          # Suggests commands as you type
+  zsh-syntax-highlighting      # Syntax highlighting for commands
+)
+
+# Source the main Oh My Zsh script to apply theme and plugins
+source $ZSH/oh-my-zsh.sh
+
+# Source Powerlevel10k configuration if it exists
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+############################# User Paths ###############################
+
+# Add personal software and scripts directories to PATH
+export PATH=$PATH:/home/{{ user_name }}/Softwares
+export PATH=$PATH:/home/{{ user_name }}/Scripts
+
+########################### Node Version Manager ########################
+
+# Load NVM to manage Node.js versions
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"           # Main NVM script
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # NVM auto-completion
+
+############################# Fuzzy Finder ##############################
+
+# Source fzf if installed for fuzzy search in history and files
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+############################ Custom Aliases ############################
+
+# Managed by Ansible via the `zsh_aliases` variable in group_vars
+{{ zsh_aliases | join('\n') }}
