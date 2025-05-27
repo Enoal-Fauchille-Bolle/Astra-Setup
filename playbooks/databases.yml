@@ -1,0 +1,4 @@
+- name: MariaDB
+  hosts: all
+  roles:
+    - { role: databases/mariadb, tags: [databases, mariadb] }

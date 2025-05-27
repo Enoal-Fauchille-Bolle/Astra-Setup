@@ -1,0 +1,79 @@
+- name: Install MariaDB
+  apt:
+    name:
+      - mariadb-server
+    state: present
+  become: true
+
+- name: Allow MariaDB port through UFW
+  ufw:
+    rule: allow
+    port: 3306
+    proto: tcp
+  become: true
+
+- name: Ensure MariaDB is running and enabled
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+  become: true
+
+- name: Install PyMySQL for Ansible MySQL modules
+  apt:
+    name: python3-pymysql
+    state: present
+  become: true
+
+- name: Set MariaDB root password (initial setup)
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    column_case_sensitive: false
+    state: present
+  become: true
+  ignore_errors: true
+
+- name: Update MariaDB root password (if already set)
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    column_case_sensitive: false
+    state: present
+  become: true
+  ignore_errors: true
+
+- name: Create a user for MariaDB
+  mysql_user:
+    name: "{{ mariadb_user }}"
+    password: "{{ mariadb_password }}"
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    column_case_sensitive: false
+    state: present
+  become: true
+
+- name: Grant remote access to MariaDB user
+  mysql_user:
+    name: "{{ mariadb_user }}"
+    password: "{{ mariadb_password }}"
+    host: '%'
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    priv: '*.*:ALL'
+    column_case_sensitive: false
+    state: present
+  become: true
+
+- name: Copy MariaDB configuration file
+  copy:
+    src: "{{ role_path }}/files/50-server.cnf"
+    dest: /etc/mysql/my.cnf
+    mode: '0640'
+    owner: root
+    group: root
+  become: true
+  notify: Restart MariaDB
