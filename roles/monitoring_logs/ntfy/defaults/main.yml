@@ -1,0 +1,9 @@
+ntfy_directory: /opt/ntfy
+ntfy_version: latest
+ntfy_base_url: "http://localhost"
+ntfy_upstream_base_url: "http://localhost"
+ntfy_port: 7171
+ntfy_admin_username: "admin"
+ntfy_admin_password: "password"
+ntfy_public_key: ""
+ntfy_private_key: ""

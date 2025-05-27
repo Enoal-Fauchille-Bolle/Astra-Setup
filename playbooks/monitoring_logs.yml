@@ -2,3 +2,8 @@
   hosts: all
   roles:
     - { role: monitoring_logs/glances, tags: [monitoring_logs, glances] }
+
+- name: NTFY
+  hosts: all
+  roles:
+    - { role: monitoring_logs/ntfy, tags: [monitoring_logs, ntfy] }

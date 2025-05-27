@@ -1,0 +1,14 @@
+[Unit]
+Description=NTFY
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/sudo /usr/bin/docker compose -f {{ ntfy_directory }}/docker-compose.yml up
+ExecStop=/usr/bin/sudo /usr/bin/docker compose -f {{ ntfy_directory }}/docker-compose.yml down
+WorkingDirectory={{ ntfy_directory }}
+User=deploy
+Group=deploy
+
+[Install]
+WantedBy=multi-user.target

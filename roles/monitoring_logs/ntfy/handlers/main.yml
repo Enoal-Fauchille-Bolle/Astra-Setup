@@ -1,0 +1,5 @@
+- name: Restart NTFY
+  service:
+    name: ntfy
+    state: restarted
+  become: true

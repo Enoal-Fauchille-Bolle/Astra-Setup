@@ -1,0 +1,69 @@
+- name: Create NTFY directory
+  file:
+    path: "{{ ntfy_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow NTFY port through UFW
+  ufw:
+    rule: allow
+    port: "{{ ntfy_port | default('7171') }}"
+    proto: tcp
+  become: true
+
+- name: Import initial docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ ntfy_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart NTFY
+  become: true
+
+
+
+
+- name: Ensure NTFY service is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ ntfy_directory }}"
+    state: present
+    recreate: never
+    build: policy
+  become: true
+  register: compose_status
+  changed_when: compose_status.changed
+
+- name: List existing NTFY users
+  community.docker.docker_container_exec:
+    container: ntfy
+    command: "ntfy user list"
+  become: true
+  register: ntfy_user_list
+  changed_when: false
+
+- name: Create admin user (idempotent)
+  community.docker.docker_container_exec:
+    container: ntfy
+    env:
+      NTFY_PASSWORD: "{{ ntfy_admin_password }}"
+    command: "ntfy user add --role=admin {{ ntfy_admin_username }}"
+  become: true
+  when: ntfy_admin_username not in ntfy_user_list.stderr
+  register: create_admin_result
+  notify: Restart NTFY
+
+- name: Import NTFY service
+  template:
+    src: "{{ role_path }}/files/ntfy.service.j2"
+    dest: "/etc/systemd/system/ntfy.service"
+    mode: '0644'
+  notify: Restart NTFY
+  become: true
+
+- name: Enable and start NTFY service
+  systemd:
+    daemon_reload: true
+    name: ntfy
+    enabled: true
+    state: started
+  become: true

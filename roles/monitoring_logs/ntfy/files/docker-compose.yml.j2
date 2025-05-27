@@ -1,0 +1,25 @@
+name: ntfy
+services:
+  ntfy:
+    image: binwiederhier/ntfy:{{ ntfy_version }}
+    container_name: ntfy
+    restart: unless-stopped
+    environment:
+      NTFY_BASE_URL: https://ntfy.mondomaine.com
+      NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
+      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
+      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_BEHIND_PROXY: "true"
+      NTFY_ATTACHMENT_CACHE_DIR: /var/lib/ntfy/attachments
+      NTFY_ENABLE_LOGIN: "true"
+      NTFY_UPSTREAM_BASE_URL: https://ntfy.mondomaine.com
+      NTFY_WEB_PUSH_FILE: /var/lib/ntfy/webpush.db
+      NTFY_WEB_PUSH_PUBLIC_KEY: "{{ ntfy_public_key }}"
+      NTFY_WEB_PUSH_PRIVATE_KEY: "{{ ntfy_private_key }}"
+      NTFY_WEB_PUSH_EMAIL_ADDRESS: zarev@belginux.com
+      NTFY_ATTACHMENT_FILE_SIZE_LIMIT: 100M
+    volumes:
+      - ./:/var/lib/ntfy
+    ports:
+      - {{ ntfy_port }}:80
+    command: serve
