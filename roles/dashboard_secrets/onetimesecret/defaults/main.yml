@@ -1,0 +1,7 @@
+onetimesecret_directory: /opt/onetimesecret
+onetimesecret_version: latest
+onetimesecret_port: 3000
+onetimesecret_domain: "localhost:{{ onetimesecret_port }}"
+onetimesecret_ssl: false
+onetimesecret_admin_password: "password" # Default password, should be overridden by vault
+onetimesecret_global_secret: "60884c8b06aa040585f1af7351dfc66804a2dfcdac86beed932151e4caa83a79" # Default global secret, should be overridden by vault

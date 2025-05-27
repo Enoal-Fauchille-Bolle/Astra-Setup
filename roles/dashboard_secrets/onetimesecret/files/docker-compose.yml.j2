@@ -1,0 +1,29 @@
+name: onetimesecret
+services:
+  redis:
+    image: redis:alpine
+    networks:
+      - app-network
+    volumes:
+      - redis_data:/data
+
+  onetimesecret:
+    image: onetimesecret/onetimesecret:latest
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - COLONEL={{ onetimesecret_admin_password }}
+      - SECRET={{ onetimesecret_global_secret }}
+      - HOST={{ onetimesecret_domain }}
+      - SSL={{ onetimesecret_ssl }}
+    ports:
+      - "{{ onetimesecret_port }}:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  redis_data:

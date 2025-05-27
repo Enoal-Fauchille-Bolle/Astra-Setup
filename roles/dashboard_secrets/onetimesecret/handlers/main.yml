@@ -1,0 +1,5 @@
+- name: Restart OneTimeSecret
+  service:
+    name: onetimesecret
+    state: restarted
+  become: true
