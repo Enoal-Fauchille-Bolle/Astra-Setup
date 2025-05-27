@@ -28,6 +28,16 @@ zsh_aliases:
   - alias op="chmod u+x"
   - alias ll="ls -la"
 
+############################# Proxy & Networking #############################
+
+# Nginx Proxy Manager
+npm_directory: /opt/npm
+npm_version: latest
+
+# Default user & password for NPM
+# admin@example.com
+# changeme
+
 ############################# Monitoring & Logs #############################
 
 # Glances

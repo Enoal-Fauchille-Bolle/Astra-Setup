@@ -1,5 +1,5 @@
-- name: Restart Glances
+- name: Restart NPM
   service:
-    name: glances
+    name: npm
     state: restarted
   become: true

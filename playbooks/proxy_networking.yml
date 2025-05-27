@@ -1,0 +1,4 @@
+- name: Nginx Proxy Manager
+  hosts: all
+  roles:
+    - { role: proxy_networking/npm, tags: [proxy_networking, npm] }

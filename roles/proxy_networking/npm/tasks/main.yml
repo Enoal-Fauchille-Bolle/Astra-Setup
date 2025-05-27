@@ -1,0 +1,41 @@
+- name: Create NPM directory
+  file:
+    path: "{{ npm_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow NPM port through UFW
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  become: true
+  loop:
+    - 80
+    - 81
+    - 443
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ npm_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart NPM
+  become: true
+
+- name: Import NPM service
+  template:
+    src: "{{ role_path }}/files/npm.service.j2"
+    dest: "/etc/systemd/system/npm.service"
+    mode: '0644'
+  notify: Restart NPM
+  become: true
+
+- name: Enable and start NPM service
+  systemd:
+    daemon_reload: true
+    name: npm
+    enabled: true
+    state: started
+  become: true
