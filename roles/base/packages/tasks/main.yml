@@ -9,6 +9,19 @@
     upgrade: dist
   become: true
 
+- name: Add Docker GPG key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  become: true
+
+- name: Add Docker APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    filename: docker
+  become: true
+
 - name: Install essential packages
   apt:
     name:
@@ -17,6 +30,7 @@
       - build-essential
       - docker.io
       - docker-compose
+      - docker-compose-plugin
       - git
       - curl
       - zip

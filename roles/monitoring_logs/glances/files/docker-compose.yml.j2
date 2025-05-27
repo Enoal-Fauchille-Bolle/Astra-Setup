@@ -1,8 +1,9 @@
+name: glances
 services:
   glances:
     image: nicolargo/glances:{{ glances_version }}
     container_name: glances
-    restart: always
+    restart: unless-stopped
     ports:
       - "{{ glances_port }}:61208"
       - "{{ (glances_port | int) + 1 }}:61209"

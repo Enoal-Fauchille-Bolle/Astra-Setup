@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/sudo /usr/bin/docker-compose -f {{ glances_directory }}/docker-compose.yml up
-ExecStop=/usr/bin/sudo /usr/bin/docker-compose -f {{ glances_directory }}/docker-compose.yml down
+ExecStart=/usr/bin/sudo /usr/bin/docker compose -f {{ glances_directory }}/docker-compose.yml up
+ExecStop=/usr/bin/sudo /usr/bin/docker compose -f {{ glances_directory }}/docker-compose.yml down
 WorkingDirectory={{ glances_directory }}
 User=deploy
 Group=deploy
