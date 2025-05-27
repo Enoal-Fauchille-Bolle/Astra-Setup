@@ -2,3 +2,8 @@
   hosts: all
   roles:
     - { role: databases/mariadb, tags: [databases, mariadb] }
+
+- name: PostgreSQL
+  hosts: all
+  roles:
+    - { role: databases/postgresql, tags: [databases, postgresql] }

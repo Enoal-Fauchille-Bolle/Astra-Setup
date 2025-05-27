@@ -1,0 +1,78 @@
+- name: Install PostgreSQL APT repository key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+  become: true
+
+- name: Add PostgreSQL APT repository
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
+    state: present
+    update_cache: true
+  become: true
+
+- name: Install PostgreSQL
+  apt:
+    name:
+      - "postgresql-{{ postgresql_version | default('16') }}"
+      - "postgresql-client-{{ postgresql_version | default('16') }}"
+      - "postgresql-contrib-{{ postgresql_version | default('16') }}"
+      - python3-psycopg2
+    state: present
+  become: true
+
+- name: Allow PostgreSQL port through UFW
+  ufw:
+    rule: allow
+    port: 5432
+    proto: tcp
+  become: true
+
+- name: Ensure PostgreSQL is running and enabled
+  service:
+    name: postgresql
+    state: started
+    enabled: true
+  become: true
+
+- name: Set PostgreSQL root password
+  postgresql_user:
+    name: postgres
+    password: "{{ postgresql_password }}"
+    role_attr_flags: LOGIN
+    state: present
+  become: true
+  become_user: postgres
+  vars:
+    ansible_ssh_pipelining: true
+
+- name: Create a user for PostgreSQL
+  postgresql_user:
+    name: "{{ postgresql_user }}"
+    password: "{{ postgresql_password }}"
+    role_attr_flags: SUPERUSER,LOGIN
+    state: present
+  become: true
+  become_user: postgres
+  vars:
+    ansible_ssh_pipelining: true
+
+- name: Copy PostgreSQL configuration file
+  copy:
+    src: postgresql.conf
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
+    owner: postgres
+    group: postgres
+    mode: "0640"
+  become: true
+  notify: Restart PostgreSQL
+
+- name: Copy PostgreSQL client authentication configuration file
+  copy:
+    src: pg_hba.conf
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+    owner: postgres
+    group: postgres
+    mode: "0640"
+  become: true
+  notify: Restart PostgreSQL

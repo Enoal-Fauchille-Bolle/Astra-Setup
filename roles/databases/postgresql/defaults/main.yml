@@ -1,0 +1,4 @@
+postgresql_version: 16
+postgresql_user: user
+postgresql_password: password # Replace with your actual user password
+postgresql_root_password: password # Replace with your actual root password
