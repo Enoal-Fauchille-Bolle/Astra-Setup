@@ -10,6 +10,7 @@
     rule: allow
     port: 3306
     proto: tcp
+    comment: "MariaDB"
   become: true
 
 - name: Ensure MariaDB is running and enabled

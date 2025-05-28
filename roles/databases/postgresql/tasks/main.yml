@@ -26,6 +26,7 @@
     rule: allow
     port: 5432
     proto: tcp
+    comment: "PostgreSQL"
   become: true
 
 - name: Ensure PostgreSQL is running and enabled

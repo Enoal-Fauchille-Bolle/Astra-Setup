@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ nextcloud_port }}"
     proto: tcp
+    comment: "Nextcloud"
   become: true
 
 - name: Import docker-compose.yml

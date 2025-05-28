@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ item }}"
     proto: tcp
+    comment: "NPM"
   become: true
   loop:
     - 80

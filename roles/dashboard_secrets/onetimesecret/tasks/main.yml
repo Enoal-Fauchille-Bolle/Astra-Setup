@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ onetimesecret_port | default('61208') }}"
     proto: tcp
+    comment: "OneTimeSecret"
   become: true
 
 - name: Import docker-compose.yml

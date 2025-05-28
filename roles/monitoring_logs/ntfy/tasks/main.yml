@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ ntfy_port | default('7171') }}"
     proto: tcp
+    comment: "NTFY"
   become: true
 
 - name: Import initial docker-compose.yml

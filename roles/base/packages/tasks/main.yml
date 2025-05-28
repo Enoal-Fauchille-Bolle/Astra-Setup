@@ -52,6 +52,7 @@
   ufw:
     rule: allow
     name: OpenSSH
+    comment: "SSH"
   become: true
 
 - name: Enable UFW firewall
