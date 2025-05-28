@@ -1,0 +1,4 @@
+- name: Discord Redirection
+  hosts: all
+  roles:
+    - { role: applications/discord-redirection, tags: [applications, discord-redirection] }

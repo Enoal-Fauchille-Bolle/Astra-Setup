@@ -1,0 +1,51 @@
+- name: Create Discord Redirection directory
+  file:
+    path: "{{ discord_redirection_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Discord Redirection port through UFW
+  ufw:
+    rule: allow
+    port: "{{ discord_redirection_port }}"
+    proto: tcp
+  become: true
+
+- name: Import Application ZIP
+  copy:
+    src: discord-redirection.zip
+    dest: "{{ discord_redirection_directory }}/discord-redirection.zip"
+    mode: '0644'
+  become: true
+
+- name: Unzip Discord Redirection application
+  unarchive:
+    src: "{{ discord_redirection_directory }}/discord-redirection.zip"
+    dest: "{{ discord_redirection_directory }}"
+    remote_src: true
+    mode: '0755'
+  become: true
+
+- name: Import .env file for Discord Redirection
+  template:
+    src: "{{ role_path }}/files/.env.j2"
+    dest: "{{ discord_redirection_directory }}/.env"
+    mode: '0644'
+  become: true
+
+- name: Import Discord Redirection service
+  template:
+    src: "{{ role_path }}/files/discord-redirection.service.j2"
+    dest: "/etc/systemd/system/discord-redirection.service"
+    mode: '0644'
+  notify: Restart Discord Redirection
+  become: true
+
+- name: Enable and start Discord Redirection service
+  systemd:
+    daemon_reload: true
+    name: discord-redirection
+    enabled: true
+    state: started
+  become: true

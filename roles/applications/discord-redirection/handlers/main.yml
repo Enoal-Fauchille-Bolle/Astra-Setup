@@ -1,0 +1,5 @@
+- name: Restart Discord Redirection
+  service:
+    name: discord-redirection
+    state: restarted
+  become: true

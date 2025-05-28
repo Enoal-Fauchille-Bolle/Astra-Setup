@@ -75,6 +75,13 @@ postgresql_root_password: !vault |
           3566663836303136330a646561636535353133343462613735356330373663336462386339643435
           3033
 
+################################ Applications ################################
+
+# Discord Redirection
+discord_redirection_directory: /opt/discord-redirection
+discord_redirection_port: 50006
+discord_redirection_url: "https://discord.gg/AfwMAQMwKj"
+
 ############################# Monitoring & Logs #############################
 
 # Glances
