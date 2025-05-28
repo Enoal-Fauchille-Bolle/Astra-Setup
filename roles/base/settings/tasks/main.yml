@@ -26,6 +26,7 @@
 - name: Set hostname
   hostname:
     name: "{{ hostname }}"
+  become: true
 
 - name: Ensure chrony is installed
   apt:
