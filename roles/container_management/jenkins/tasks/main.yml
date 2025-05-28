@@ -1,0 +1,68 @@
+- name: Create Jenkins directory
+  file:
+    path: "{{ jenkins_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Jenkins port through UFW
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    comment: "Jenkins"
+  become: true
+  loop:
+    - "{{ jenkins_port }}"
+    - "{{ jenkins_api_port }}"
+
+- name: Import Application ZIP
+  copy:
+    src: jenkins.zip
+    dest: "{{ jenkins_directory }}/jenkins.zip"
+    mode: '0644'
+  register: jenkins_import_zip
+  notify: Restart Jenkins
+  become: true
+
+- name: Unzip Jenkins application
+  unarchive:
+    src: "{{ jenkins_directory }}/jenkins.zip"
+    dest: "{{ jenkins_directory }}"
+    remote_src: true
+    mode: '0755'
+  when: jenkins_import_zip.changed
+  notify: Restart Jenkins
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ jenkins_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Jenkins
+  become: true
+
+- name: Import .env file for Jenkins
+  template:
+    src: "{{ role_path }}/files/.env.j2"
+    dest: "{{ jenkins_directory }}/.env"
+    mode: '0644'
+  notify: Restart Jenkins
+  become: true
+
+- name: Import Jenkins service
+  template:
+    src: "{{ role_path }}/files/jenkins.service.j2"
+    dest: "/etc/systemd/system/jenkins.service"
+    mode: '0644'
+  notify: Restart Jenkins
+  become: true
+
+- name: Enable and start Jenkins service
+  systemd:
+    daemon_reload: true
+    name: jenkins
+    enabled: true
+    state: started
+  become: true

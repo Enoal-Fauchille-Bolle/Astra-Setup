@@ -105,6 +105,16 @@ portainer_version: latest
 portainer_port: 9443
 portainer_api_port: 8000
 
+# Jenkins
+jenkins_directory: /opt/jenkins
+jenkins_port: 8003
+jenkins_api_port: 8004
+user_id: "azerty"
+user_username: "AZERTY44"
+user_password: "***REMOVED***"
+github_username: "Enoal-Fauchille-Bolle"
+github_token: "***REMOVED***"
+
 ################################ Applications ################################
 
 # Discord Redirection

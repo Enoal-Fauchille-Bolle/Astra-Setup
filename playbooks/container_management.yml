@@ -2,3 +2,8 @@
   hosts: all
   roles:
     - { role: container_management/portainer, tags: [container_management, portainer] }
+
+- name: Jenkins
+  hosts: all
+  roles:
+    - { role: container_management/jenkins, tags: [container_management, jenkins] }

@@ -1,0 +1,8 @@
+jenkins_directory: /opt/jenkins
+jenkins_port: 8080
+jenkins_api_port: 50000
+user_id: "user"
+user_username: "Username"
+user_password: "password" # Replace with your actual password
+github_username: "GitHubUsername"
+github_token: "GitHubToken" # Replace with your actual GitHub token
