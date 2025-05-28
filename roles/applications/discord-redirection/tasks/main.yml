@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ discord_redirection_port }}"
     proto: tcp
+    comment: "Discord Redirection"
   become: true
 
 - name: Import Application ZIP
@@ -17,6 +18,7 @@
     src: discord-redirection.zip
     dest: "{{ discord_redirection_directory }}/discord-redirection.zip"
     mode: '0644'
+  register: discord_redirection_import_zip
   notify: Restart Discord Redirection
   become: true
 
@@ -26,6 +28,7 @@
     dest: "{{ discord_redirection_directory }}"
     remote_src: true
     mode: '0755'
+  when: discord_redirection_import_zip.changed
   notify: Restart Discord Redirection
   become: true
 
