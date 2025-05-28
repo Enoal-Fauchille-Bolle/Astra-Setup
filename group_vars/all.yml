@@ -82,6 +82,11 @@ discord_redirection_directory: /opt/discord-redirection
 discord_redirection_port: 50006
 discord_redirection_url: "https://discord.gg/AfwMAQMwKj"
 
+# Status Redirection
+status_redirection_directory: /opt/status-redirection
+status_redirection_port: 50005
+status_redirection_url: "https://stats.uptimerobot.com/r7YZX5qGRN"
+
 ############################# Monitoring & Logs #############################
 
 # Glances

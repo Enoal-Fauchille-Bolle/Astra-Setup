@@ -2,3 +2,8 @@
   hosts: all
   roles:
     - { role: applications/discord-redirection, tags: [applications, discord-redirection] }
+
+- name: Status Redirection
+  hosts: all
+  roles:
+    - { role: applications/status-redirection, tags: [applications, status-redirection] }

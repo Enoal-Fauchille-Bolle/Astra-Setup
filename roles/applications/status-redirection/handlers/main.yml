@@ -1,0 +1,5 @@
+- name: Restart Status Redirection
+  service:
+    name: status-redirection
+    state: restarted
+  become: true

@@ -1,0 +1,14 @@
+[Unit]
+Description=Status Redirection
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/sudo /usr/bin/docker compose -f {{ status_redirection_directory }}/docker-compose.yml up
+ExecStop=/usr/bin/sudo /usr/bin/docker compose -f {{ status_redirection_directory }}/docker-compose.yml down
+WorkingDirectory={{ status_redirection_directory }}
+User=deploy
+Group=deploy
+
+[Install]
+WantedBy=multi-user.target
