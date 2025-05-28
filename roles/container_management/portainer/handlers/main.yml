@@ -1,0 +1,5 @@
+- name: Restart Portainer
+  service:
+    name: portainer
+    state: restarted
+  become: true

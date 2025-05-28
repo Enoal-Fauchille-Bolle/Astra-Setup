@@ -2,6 +2,7 @@
 - import_playbook: proxy_networking.yml
 - import_playbook: databases.yml
 - import_playbook: storage_backups.yml
+- import_playbook: container_management.yml
 - import_playbook: applications.yml
 - import_playbook: monitoring_logs.yml
 - import_playbook: dashboard_secrets.yml

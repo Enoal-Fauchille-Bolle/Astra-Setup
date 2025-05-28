@@ -1,0 +1,4 @@
+- name: Portainer
+  hosts: all
+  roles:
+    - { role: container_management/portainer, tags: [container_management, portainer] }

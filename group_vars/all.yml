@@ -97,6 +97,13 @@ nextcloud_mysql_password: !vault |
           37613130363566636362356662306164393339646230303233623135636638383135353563656636
           3566663836303136330a646561636535353133343462613735356330373663336462386339643435
           3033
+############################ Container Management ############################
+
+# Portainer
+portainer_directory: /opt/portainer
+portainer_version: latest
+portainer_port: 9443
+portainer_api_port: 8000
 
 ################################ Applications ################################
 

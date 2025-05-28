@@ -1,0 +1,4 @@
+portainer_directory: /opt/portainer
+portainer_version: latest
+portainer_port: 9443
+portainer_api_port: 8000

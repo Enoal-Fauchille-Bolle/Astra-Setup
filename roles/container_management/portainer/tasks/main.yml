@@ -1,0 +1,41 @@
+- name: Create Portainer directory
+  file:
+    path: "{{ portainer_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Portainer port through UFW
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    comment: "Portainer"
+  become: true
+  loop:
+    - "{{ portainer_port }}"
+    - "{{ portainer_api_port }}"
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ portainer_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Portainer
+  become: true
+
+- name: Import Portainer service
+  template:
+    src: "{{ role_path }}/files/portainer.service.j2"
+    dest: "/etc/systemd/system/portainer.service"
+    mode: '0644'
+  notify: Restart Portainer
+  become: true
+
+- name: Enable and start Portainer service
+  systemd:
+    daemon_reload: true
+    name: portainer
+    enabled: true
+    state: started
+  become: true
