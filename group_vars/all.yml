@@ -2,7 +2,7 @@
 
 # Linux settings
 timezone: Europe/Paris
-hostname: astra
+hostname: astra-setup
 swappiness: 60
 file_max: 100000
 
