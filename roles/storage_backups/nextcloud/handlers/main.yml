@@ -1,0 +1,5 @@
+- name: Restart Nextcloud
+  service:
+    name: nextcloud
+    state: restarted
+  become: true

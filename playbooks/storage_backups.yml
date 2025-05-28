@@ -1,0 +1,4 @@
+- name: Nextcloud
+  hosts: all
+  roles:
+    - { role: storage_backups/nextcloud, tags: [storage_backups, nextcloud] }

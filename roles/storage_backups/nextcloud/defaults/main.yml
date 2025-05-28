@@ -1,0 +1,7 @@
+nextcloud_directory: /opt/nextcloud
+nextcloud_version: latest
+nextcloud_port: 8002
+nextcloud_mysql_root_password: "password" # Replace with your actual root password
+nextcloud_mysql_database: nextcloud
+nextcloud_mysql_user: user
+nextcloud_mysql_password: "password" # Replace with your actual user password

@@ -1,0 +1,41 @@
+name: nextcloud
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud:{{ nextcloud_version }}
+    restart: always
+    ports:
+      - {{ nextcloud_port }}:80
+    volumes:
+      - nextcloud_data:/var/www/html
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: {{ nextcloud_mysql_database }}
+      MYSQL_USER: {{ nextcloud_mysql_user }}
+      MYSQL_PASSWORD: {{ nextcloud_mysql_password }}
+    networks:
+      - nextcloud_net
+    depends_on:
+      - db
+
+  db:
+    image: mariadb
+    container_name: nextcloud_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ nextcloud_mysql_root_password }}
+      MYSQL_DATABASE: {{ nextcloud_mysql_database }}
+      MYSQL_USER: {{ nextcloud_mysql_user }}
+      MYSQL_PASSWORD: {{ nextcloud_mysql_password }}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - nextcloud_net
+
+volumes:
+  nextcloud_data:
+  db_data:
+
+networks:
+  nextcloud_net:
+    driver: bridge
