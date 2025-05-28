@@ -2,3 +2,8 @@
   hosts: all
   roles:
     - { role: storage_backups/nextcloud, tags: [storage_backups, nextcloud] }
+
+- name: Filebrowser
+  hosts: all
+  roles:
+    - { role: storage_backups/filebrowser, tags: [storage_backups, filebrowser] }

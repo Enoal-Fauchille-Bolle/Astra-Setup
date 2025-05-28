@@ -1,0 +1,81 @@
+- name: Create Filebrowser directory
+  file:
+    path: "{{ filebrowser_directory }}"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Allow Filebrowser port through UFW
+  ufw:
+    rule: allow
+    port: "{{ filebrowser_port }}"
+    proto: tcp
+    comment: "Filebrowser"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ filebrowser_directory }}/docker-compose.yml"
+    mode: "0644"
+  notify: Restart Filebrowser
+  become: true
+
+- name: Create base files for Filebrowser
+  file:
+    path: "{{ filebrowser_directory }}/{{ item }}"
+    state: file
+    mode: "0644"
+  with_items:
+    - filebrowser.db
+    - settings.json
+  become: true
+
+- name: Import Nginx configuration for Filebrowser
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: "{{ filebrowser_directory }}/nginx.conf"
+    mode: "0644"
+  notify: Restart Filebrowser
+  become: true
+
+- name: Install python3-passlib for htpasswd module
+  apt:
+    name: python3-passlib
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Create auth directory for .htpasswd file
+  file:
+    path: "{{ filebrowser_directory }}/auth"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Generate .htpasswd file for Filebrowser
+  htpasswd:
+    path: "{{ filebrowser_directory }}/auth/.htpasswd"
+    name: "{{ filebrowser_user }}"
+    password: "{{ filebrowser_password }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Filebrowser
+  become: true
+
+- name: Import Filebrowser service
+  template:
+    src: "{{ role_path }}/files/filebrowser.service.j2"
+    dest: "/etc/systemd/system/filebrowser.service"
+    mode: "0644"
+  notify: Restart Filebrowser
+  become: true
+
+- name: Enable and start Filebrowser service
+  systemd:
+    daemon_reload: true
+    name: filebrowser
+    enabled: true
+    state: started
+  become: true

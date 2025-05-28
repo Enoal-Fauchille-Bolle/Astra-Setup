@@ -1,0 +1,3 @@
+filebrowser_directory: /opt/filebrowser
+filebrowser_version: latest
+filebrowser_port: 8001

@@ -1,0 +1,5 @@
+- name: Restart Filebrowser
+  service:
+    name: filebrowser
+    state: restarted
+  become: true
