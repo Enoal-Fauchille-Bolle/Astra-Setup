@@ -1,4 +1,4 @@
-- name: Create glances directory
+- name: Create Glances directory
   file:
     path: "{{ glances_directory }}"
     state: directory
@@ -8,7 +8,7 @@
 - name: Allow Glances port through UFW
   ufw:
     rule: allow
-    port: "{{ glances_port | default('61208') }}"
+    port: "{{ glances_port }}"
     proto: tcp
   become: true
 
