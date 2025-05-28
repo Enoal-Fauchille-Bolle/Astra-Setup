@@ -17,6 +17,7 @@
     src: discord-redirection.zip
     dest: "{{ discord_redirection_directory }}/discord-redirection.zip"
     mode: '0644'
+  notify: Restart Discord Redirection
   become: true
 
 - name: Unzip Discord Redirection application
@@ -25,6 +26,7 @@
     dest: "{{ discord_redirection_directory }}"
     remote_src: true
     mode: '0755'
+  notify: Restart Discord Redirection
   become: true
 
 - name: Import .env file for Discord Redirection
@@ -32,6 +34,7 @@
     src: "{{ role_path }}/files/.env.j2"
     dest: "{{ discord_redirection_directory }}/.env"
     mode: '0644'
+  notify: Restart Discord Redirection
   become: true
 
 - name: Import Discord Redirection service
