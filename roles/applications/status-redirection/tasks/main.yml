@@ -10,6 +10,7 @@
     rule: allow
     port: "{{ status_redirection_port }}"
     proto: tcp
+    comment: "Status Redirection"
   become: true
 
 - name: Import Application ZIP
@@ -17,6 +18,7 @@
     src: status-redirection.zip
     dest: "{{ status_redirection_directory }}/status-redirection.zip"
     mode: '0644'
+  register: status_redirection_import_zip
   notify: Restart Status Redirection
   become: true
 
@@ -26,6 +28,7 @@
     dest: "{{ status_redirection_directory }}"
     remote_src: true
     mode: '0755'
+  when: status_redirection_import_zip.changed
   notify: Restart Status Redirection
   become: true
 
