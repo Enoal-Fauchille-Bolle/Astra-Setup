@@ -1,0 +1,77 @@
+- name: Gather system facts
+  setup:
+    gather_subset:
+      - hardware
+      - system
+      - processor
+
+- name: Get CPU usage
+  shell: top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1
+  register: cpu_usage
+
+- name: Get memory usage
+  shell: free -m | awk 'NR==2{printf "%.1f", $3*100/$2}'
+  register: memory_usage
+
+- name: Get disk usage for root partition
+  shell: df -h / | awk 'NR==2 {print $5}' | cut -d'%' -f1
+  register: disk_usage
+
+- name: Get system uptime
+  shell: uptime -p
+  register: system_uptime
+
+- name: Get load average
+  shell: uptime | awk -F'load average:' '{print $2}' | sed 's/^ *//'
+  register: load_average
+
+- name: Calculate memory values
+  set_fact:
+    memory_total_gb: "{{ (ansible_memtotal_mb / 1024) | round(1) }}"
+
+- name: Get detailed memory info
+  shell: free -m | awk 'NR==2{printf "%.1f %.1f", $3/1024, $7/1024}'
+  register: memory_details
+
+- name: Set memory variables
+  set_fact:
+    memory_used_gb: "{{ memory_details.stdout.split(' ')[0] }}"
+    memory_free_gb: "{{ memory_details.stdout.split(' ')[1] }}"
+
+- name: Get disk space details
+  shell: df -h / | awk 'NR==2 {print $2 " " $3 " " $4}'
+  register: disk_details
+
+- name: Set disk variables
+  set_fact:
+    disk_total: "{{ disk_details.stdout.split(' ')[0] }}"
+    disk_used: "{{ disk_details.stdout.split(' ')[1] }}"
+    disk_free: "{{ disk_details.stdout.split(' ')[2] }}"
+
+- name: Display system usage summary
+  pause:
+    seconds: 0
+    prompt: |
+      
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                    SYSTEM USAGE
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      
+      🖥️  HOSTNAME: {{ ansible_hostname }}
+      ⏰ UPTIME: {{ system_uptime.stdout }}
+      
+      🔥 CPU USAGE: {{ cpu_usage.stdout }}%
+      ⚡ LOAD AVERAGE: {{ load_average.stdout }}
+      🔧 CPU CORES: {{ ansible_processor_vcpus }}
+      
+      🧠 MEMORY:
+         Total: {{ memory_total_gb }} GB
+         Used:  {{ memory_used_gb }} GB ({{ memory_usage.stdout }}%)
+         Free:  {{ memory_free_gb }} GB
+      
+      💾 DISK (/) :
+         Total: {{ disk_total }}
+         Used:  {{ disk_used }} ({{ disk_usage.stdout }}%)
+         Free:  {{ disk_free }}
+      
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,48 @@
+- name: Define list of services to report
+  set_fact:
+    service_list:
+      - npm
+      - mariadb
+      - postgresql
+      - nextcloud
+      - filebrowser
+      - portainer
+      - jenkins
+      - discord_redirection
+      - status_redirection
+      - glances
+      - ntfy
+      - onetimesecret
+
+- name: Build enabled services list
+  set_fact:
+    enabled_services: "{{ enabled_services | default([]) + [item] }}"
+  loop: "{{ service_list }}"
+  when: vars[item + '_enabled'] | default(false)
+
+- name: Build disabled services list
+  set_fact:
+    disabled_services: "{{ disabled_services | default([]) + [item] }}"
+  loop: "{{ service_list }}"
+  when: not (vars[item + '_enabled'] | default(false))
+
+- name: Display services summary
+  pause:
+    seconds: 0
+    prompt: |
+
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                    SERVICES SUMMARY
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+      {% for service in service_list -%}
+      {% if vars[service + '_enabled'] | default(false) -%}
+      ✅ {{ service }}
+      {% else -%}
+      ❌ {{ service }}
+      {% endif -%}
+      {% endfor %}
+
+      📊 Total: {{ enabled_services | default([]) | length }} enabled / {{ disabled_services | default([]) | length }} disabled
+
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

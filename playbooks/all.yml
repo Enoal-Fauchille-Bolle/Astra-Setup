@@ -6,3 +6,4 @@
 - import_playbook: applications.yml
 - import_playbook: monitoring_logs.yml
 - import_playbook: dashboard_secrets.yml
+- import_playbook: summary.yml

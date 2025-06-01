@@ -1,0 +1,9 @@
+- name: System Usage Summary
+  hosts: all
+  roles:
+    - { role: summary/system_usage, tags: [summary, system_usage] }
+
+- name: Services
+  hosts: all
+  roles:
+    - { role: summary/services, tags: [summary, services] }
