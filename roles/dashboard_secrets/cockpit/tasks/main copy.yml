@@ -1,0 +1,47 @@
+- name: Create Webmin directory
+  file:
+    path: "{{ webmin_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Create Webmin assets directory
+  file:
+    path: "{{ webmin_directory }}/webmin"
+    state: directory
+    mode: '0755'
+    owner: "1000"
+    group: "1000"
+  become: true
+
+- name: Allow Webmin port through UFW
+  ufw:
+    rule: allow
+    port: "{{ webmin_port }}"
+    proto: tcp
+    comment: "Webmin"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ webmin_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Webmin
+  become: true
+
+- name: Import Webmin service
+  template:
+    src: "{{ role_path }}/files/webmin.service.j2"
+    dest: "/etc/systemd/system/webmin.service"
+    mode: '0644'
+  notify: Restart Webmin
+  become: true
+
+- name: Enable/Disable Webmin service
+  systemd:
+    daemon_reload: true
+    name: webmin
+    enabled: "{{ 'true' if webmin_enabled else 'false' }}"
+    state: "{{ 'started' if webmin_enabled else 'stopped' }}"
+  become: true

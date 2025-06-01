@@ -258,3 +258,7 @@ homer_enabled: true
 homer_directory: /opt/homer
 homer_version: latest
 homer_port: 8082
+
+# Cockpit
+cockpit_enabled: true
+cockpit_port: 9090

@@ -1,0 +1,40 @@
+
+- name: Install Cockpit
+  package:
+    name: cockpit
+    state: present
+  become: true
+
+- name: Allow Cockpit port through UFW
+  ufw:
+    rule: allow
+    port: "{{ cockpit_port }}"
+    proto: tcp
+    comment: "Cockpit"
+  become: true
+
+- name: Create Cockpit configuration directory
+  file:
+    path: /etc/systemd/system/cockpit.socket.d
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Configure Cockpit custom port
+  copy:
+    content: |
+      [Socket]
+      ListenStream=
+      ListenStream={{ cockpit_port }}
+    dest: /etc/systemd/system/cockpit.socket.d/listen.conf
+    mode: '0644'
+  notify: Restart Cockpit
+  become: true
+
+- name: Enable and start Cockpit
+  systemd:
+    name: cockpit.socket
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  become: true

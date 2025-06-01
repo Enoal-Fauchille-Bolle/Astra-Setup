@@ -1,0 +1,6 @@
+- name: Restart Cockpit
+  service:
+    name: cockpit.socket
+    state: restarted
+  when: cockpit_enabled
+  become: true
