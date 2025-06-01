@@ -8,7 +8,7 @@
 - name: Allow CasaOS port through UFW
   ufw:
     rule: allow
-    port: "{{ casaos_port | default('61208') }}"
+    port: "{{ casaos_port }}"
     proto: tcp
     comment: "CasaOS"
   become: true

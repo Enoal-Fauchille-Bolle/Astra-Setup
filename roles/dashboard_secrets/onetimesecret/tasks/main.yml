@@ -8,7 +8,7 @@
 - name: Allow OneTimeSecret port through UFW
   ufw:
     rule: allow
-    port: "{{ onetimesecret_port | default('61208') }}"
+    port: "{{ onetimesecret_port }}"
     proto: tcp
     comment: "OneTimeSecret"
   become: true
