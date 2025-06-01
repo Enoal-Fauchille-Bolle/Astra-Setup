@@ -7,3 +7,8 @@
   hosts: all
   roles:
     - { role: storage_backups/filebrowser, tags: [storage_backups, filebrowser] }
+
+- name: Duplicati
+  hosts: all
+  roles:
+    - { role: storage_backups/duplicati, tags: [storage_backups, duplicati] }

@@ -1,0 +1,38 @@
+- name: Create Duplicati directory
+  file:
+    path: "{{ duplicati_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Duplicati port through UFW
+  ufw:
+    rule: allow
+    port: "{{ duplicati_port }}"
+    proto: tcp
+    comment: "Duplicati"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ duplicati_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Duplicati
+  become: true
+
+- name: Import Duplicati service
+  template:
+    src: "{{ role_path }}/files/duplicati.service.j2"
+    dest: "/etc/systemd/system/duplicati.service"
+    mode: '0644'
+  notify: Restart Duplicati
+  become: true
+
+- name: Enable/Disable Duplicati service
+  systemd:
+    daemon_reload: true
+    name: duplicati
+    enabled: "{{ 'true' if duplicati_enabled else 'false' }}"
+    state: "{{ 'started' if duplicati_enabled else 'stopped' }}"
+  become: true

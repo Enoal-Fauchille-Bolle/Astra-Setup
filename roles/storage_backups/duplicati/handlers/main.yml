@@ -1,0 +1,6 @@
+- name: Restart Duplicati
+  service:
+    name: duplicati
+    state: restarted
+  when: duplicati_enabled
+  become: true

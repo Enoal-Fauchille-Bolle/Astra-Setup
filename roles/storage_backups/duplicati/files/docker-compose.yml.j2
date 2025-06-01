@@ -1,0 +1,35 @@
+name: duplicati
+
+services:
+  duplicati:
+    image: duplicati/duplicati:{{ duplicati_version }}
+    container_name: duplicati
+    hostname: duplicati
+    restart: unless-stopped
+    environment:
+      - DUPLICATI__SETTINGS_ENCRYPTION_KEY={{ duplicati_encryption_key }}
+      - DUPLICATI__WEBSERVICE_PASSWORD={{ duplicati_password }}
+      - DUPLICATI__SNAPSHOT_POLICY=auto
+      - DUPLICATI__WEBSERVICE_INTERFACE=any
+      - DUPLICATI__WEBSERVICE_ALLOWED_HOSTNAMES=*
+    ports:
+      - "{{ duplicati_port }}:8200"
+    volumes:
+      - ./duplicati/data:/data
+      - /:/source/host:ro
+      - ./duplicati/backups:/backups
+    privileged: true
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 2G
+    #       cpus: '1.0'
+    #     reservations:
+    #       memory: 256M
+    #       cpus: '0.25'
+    # healthcheck:
+    #   test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8200/"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s

@@ -1,0 +1,6 @@
+duplicati_enabled: false
+duplicati_directory: /opt/duplicati
+duplicati_version: latest
+duplicati_port: 8200
+duplicati_encryption_key: "very_secret_encryption_key" # Replace with your actual encryption key
+duplicati_password: "password" # Replace with your actual password
