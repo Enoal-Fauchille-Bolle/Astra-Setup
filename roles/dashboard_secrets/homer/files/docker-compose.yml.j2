@@ -1,0 +1,12 @@
+name: homer
+services:
+  homer:
+    container_name: homer
+    image: b4bz/homer:{{ homer_version }}
+    volumes:
+      - ./homer:/www/assets
+    ports:
+      - {{ homer_port }}:8080
+    environment:
+      - INIT_ASSETS=1 # default, requires the config directory to be writable for the container user (see user option)
+    restart: unless-stopped

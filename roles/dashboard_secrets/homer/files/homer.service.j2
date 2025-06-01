@@ -1,0 +1,14 @@
+[Unit]
+Description=Homer
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/sudo /usr/bin/docker compose -f {{ homer_directory }}/docker-compose.yml up
+ExecStop=/usr/bin/sudo /usr/bin/docker compose -f {{ homer_directory }}/docker-compose.yml down
+WorkingDirectory={{ homer_directory }}
+User=deploy
+Group=deploy
+
+[Install]
+WantedBy=multi-user.target

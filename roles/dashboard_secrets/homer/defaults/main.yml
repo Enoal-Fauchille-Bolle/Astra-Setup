@@ -1,0 +1,4 @@
+homer_enabled: false
+homer_directory: /opt/homer
+homer_version: latest
+homer_port: 8080

@@ -248,7 +248,13 @@ onetimesecret_global_secret: !vault |
           38353062643830336133
 
 # CasaOS
-casaos_enabled: true
+casaos_enabled: false
 casaos_directory: /opt/casaos
 casaos_version: latest
 casaos_port: 8081
+
+# Homer
+homer_enabled: true
+homer_directory: /opt/homer
+homer_version: latest
+homer_port: 8082

@@ -1,0 +1,47 @@
+- name: Create Homer directory
+  file:
+    path: "{{ homer_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Create Homer assets directory
+  file:
+    path: "{{ homer_directory }}/homer"
+    state: directory
+    mode: '0755'
+    owner: "1000"
+    group: "1000"
+  become: true
+
+- name: Allow Homer port through UFW
+  ufw:
+    rule: allow
+    port: "{{ homer_port }}"
+    proto: tcp
+    comment: "Homer"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ homer_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Homer
+  become: true
+
+- name: Import Homer service
+  template:
+    src: "{{ role_path }}/files/homer.service.j2"
+    dest: "/etc/systemd/system/homer.service"
+    mode: '0644'
+  notify: Restart Homer
+  become: true
+
+- name: Enable/Disable Homer service
+  systemd:
+    daemon_reload: true
+    name: homer
+    enabled: "{{ 'true' if homer_enabled else 'false' }}"
+    state: "{{ 'started' if homer_enabled else 'stopped' }}"
+  become: true

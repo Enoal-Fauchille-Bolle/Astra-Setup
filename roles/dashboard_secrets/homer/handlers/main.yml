@@ -1,0 +1,6 @@
+- name: Restart Homer
+  service:
+    name: homer
+    state: restarted
+  when: homer_enabled
+  become: true
