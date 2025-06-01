@@ -1,0 +1,6 @@
+- name: Restart CasaOS
+  service:
+    name: casaos
+    state: restarted
+  when: casaos_enabled
+  become: true

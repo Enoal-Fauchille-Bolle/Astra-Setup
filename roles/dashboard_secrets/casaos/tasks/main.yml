@@ -1,0 +1,38 @@
+- name: Create CasaOS directory
+  file:
+    path: "{{ casaos_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow CasaOS port through UFW
+  ufw:
+    rule: allow
+    port: "{{ casaos_port | default('61208') }}"
+    proto: tcp
+    comment: "CasaOS"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ casaos_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart CasaOS
+  become: true
+
+- name: Import CasaOS service
+  template:
+    src: "{{ role_path }}/files/casaos.service.j2"
+    dest: "/etc/systemd/system/casaos.service"
+    mode: '0644'
+  notify: Restart CasaOS
+  become: true
+
+- name: Enable/Disable CasaOS service
+  systemd:
+    daemon_reload: true
+    name: casaos
+    enabled: "{{ 'true' if casaos_enabled else 'false' }}"
+    state: "{{ 'started' if casaos_enabled else 'stopped' }}"
+  become: true

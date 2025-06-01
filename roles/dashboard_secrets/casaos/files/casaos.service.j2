@@ -1,0 +1,14 @@
+[Unit]
+Description=CasaOS
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/sudo /usr/bin/docker compose -f {{ casaos_directory }}/docker-compose.yml up
+ExecStop=/usr/bin/sudo /usr/bin/docker compose -f {{ casaos_directory }}/docker-compose.yml down
+WorkingDirectory={{ casaos_directory }}
+User=deploy
+Group=deploy
+
+[Install]
+WantedBy=multi-user.target

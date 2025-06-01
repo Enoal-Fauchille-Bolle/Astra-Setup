@@ -1,0 +1,12 @@
+name: casaos
+services:
+  casaos:
+    container_name: casaos
+    image: dockurr/casa:{{ casaos_version }}
+    ports:
+      - {{ casaos_port }}:8080
+    volumes:
+      - ./casa:/DATA
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    stop_grace_period: 1m

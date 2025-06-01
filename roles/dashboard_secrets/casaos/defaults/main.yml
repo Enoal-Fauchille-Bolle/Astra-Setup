@@ -1,0 +1,4 @@
+casaos_enabled: false
+casaos_directory: /opt/casaos
+casaos_version: latest
+casaos_port: 8080
