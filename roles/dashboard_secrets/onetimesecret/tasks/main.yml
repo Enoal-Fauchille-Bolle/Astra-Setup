@@ -29,10 +29,10 @@
   notify: Restart OneTimeSecret
   become: true
 
-- name: Enable and start OneTimeSecret service
+- name: Enable/Disable OneTimeSecret service
   systemd:
     daemon_reload: true
     name: onetimesecret
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if onetimesecret_enabled else 'false' }}"
+    state: "{{ 'started' if onetimesecret_enabled else 'stopped' }}"
   become: true

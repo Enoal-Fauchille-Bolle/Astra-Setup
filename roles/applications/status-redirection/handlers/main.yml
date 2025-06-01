@@ -2,4 +2,5 @@
   service:
     name: status-redirection
     state: restarted
+  when: status_redirection_enabled
   become: true

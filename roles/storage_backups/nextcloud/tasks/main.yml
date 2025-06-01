@@ -29,10 +29,10 @@
   notify: Restart Nextcloud
   become: true
 
-- name: Enable and start Nextcloud service
+- name: Enable/Disable Nextcloud service
   systemd:
     daemon_reload: true
     name: nextcloud
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if nextcloud_enabled else 'false' }}"
+    state: "{{ 'started' if nextcloud_enabled else 'stopped' }}"
   become: true

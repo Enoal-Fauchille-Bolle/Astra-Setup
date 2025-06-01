@@ -33,10 +33,10 @@
   notify: Restart NPM
   become: true
 
-- name: Enable and start NPM service
+- name: Enable/Disable NPM service
   systemd:
     daemon_reload: true
     name: npm
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if npm_enabled else 'false' }}"
+    state: "{{ 'started' if npm_enabled else 'stopped' }}"
   become: true

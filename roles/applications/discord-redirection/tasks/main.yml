@@ -48,10 +48,10 @@
   notify: Restart Discord Redirection
   become: true
 
-- name: Enable and start Discord Redirection service
+- name: Enable/Disable Discord Redirection service
   systemd:
     daemon_reload: true
     name: discord-redirection
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if discord_redirection_enabled else 'false' }}"
+    state: "{{ 'started' if discord_redirection_enabled else 'stopped' }}"
   become: true

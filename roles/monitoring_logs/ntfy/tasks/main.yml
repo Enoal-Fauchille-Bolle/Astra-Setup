@@ -21,9 +21,6 @@
   notify: Restart NTFY
   become: true
 
-
-
-
 - name: Ensure NTFY service is running
   community.docker.docker_compose_v2:
     project_src: "{{ ntfy_directory }}"
@@ -42,7 +39,7 @@
   register: ntfy_user_list
   changed_when: false
 
-- name: Create admin user (idempotent)
+- name: Create admin user
   community.docker.docker_container_exec:
     container: ntfy
     env:
@@ -61,10 +58,10 @@
   notify: Restart NTFY
   become: true
 
-- name: Enable and start NTFY service
+- name: Enable/Disable NTFY service
   systemd:
     daemon_reload: true
     name: ntfy
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if ntfy_enabled else 'false' }}"
+    state: "{{ 'started' if ntfy_enabled else 'stopped' }}"
   become: true

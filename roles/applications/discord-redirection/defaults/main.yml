@@ -1,3 +1,4 @@
+discord_redirection_enabled: false
 discord_redirection_directory: /opt/discord-redirection
 discord_redirection_port: 3000
 discord_redirection_url: "https://discord.gg/your-link"

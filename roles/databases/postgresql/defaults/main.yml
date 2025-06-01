@@ -1,3 +1,4 @@
+postgresql_enabled: false
 postgresql_version: 16
 postgresql_user: user
 postgresql_password: password # Replace with your actual user password

@@ -2,4 +2,5 @@
   service:
     name: portainer
     state: restarted
+  when: portainer_enabled
   become: true

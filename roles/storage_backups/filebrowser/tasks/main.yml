@@ -72,10 +72,10 @@
   notify: Restart Filebrowser
   become: true
 
-- name: Enable and start Filebrowser service
+- name: Enable/Disable Filebrowser service
   systemd:
     daemon_reload: true
     name: filebrowser
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if filebrowser_enabled else 'false' }}"
+    state: "{{ 'started' if filebrowser_enabled else 'stopped' }}"
   become: true

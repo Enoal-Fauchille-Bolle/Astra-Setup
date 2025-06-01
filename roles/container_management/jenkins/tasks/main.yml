@@ -59,10 +59,10 @@
   notify: Restart Jenkins
   become: true
 
-- name: Enable and start Jenkins service
+- name: Enable/Disable Jenkins service
   systemd:
     daemon_reload: true
     name: jenkins
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if jenkins_enabled else 'false' }}"
+    state: "{{ 'started' if jenkins_enabled else 'stopped' }}"
   become: true

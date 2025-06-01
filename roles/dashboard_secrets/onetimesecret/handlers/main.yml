@@ -2,4 +2,5 @@
   service:
     name: onetimesecret
     state: restarted
+  when: onetimesecret_enabled
   become: true

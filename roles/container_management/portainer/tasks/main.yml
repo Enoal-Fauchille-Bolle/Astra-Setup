@@ -32,10 +32,10 @@
   notify: Restart Portainer
   become: true
 
-- name: Enable and start Portainer service
+- name: Enable/Disable Portainer service
   systemd:
     daemon_reload: true
     name: portainer
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if portainer_enabled else 'false' }}"
+    state: "{{ 'started' if portainer_enabled else 'stopped' }}"
   become: true

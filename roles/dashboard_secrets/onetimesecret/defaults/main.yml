@@ -1,3 +1,4 @@
+onetimesecret_enabled: false
 onetimesecret_directory: /opt/onetimesecret
 onetimesecret_version: latest
 onetimesecret_port: 3000

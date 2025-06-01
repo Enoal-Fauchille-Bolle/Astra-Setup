@@ -48,10 +48,10 @@
   notify: Restart Status Redirection
   become: true
 
-- name: Enable and start Status Redirection service
+- name: Enable/Disable Status Redirection service
   systemd:
     daemon_reload: true
     name: status-redirection
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if status_redirection_enabled else 'false' }}"
+    state: "{{ 'started' if status_redirection_enabled else 'stopped' }}"
   become: true

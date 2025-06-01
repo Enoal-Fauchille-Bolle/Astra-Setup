@@ -1,3 +1,4 @@
+nextcloud_enabled: false
 nextcloud_directory: /opt/nextcloud
 nextcloud_version: latest
 nextcloud_port: 8002

@@ -77,3 +77,11 @@
     mode: "0640"
   become: true
   notify: Restart PostgreSQL
+
+- name: Enable/Disable PostgreSQL service
+  systemd:
+    daemon_reload: true
+    name: postgresql
+    enabled: "{{ 'true' if postgresql_enabled else 'false' }}"
+    state: "{{ 'started' if postgresql_enabled else 'stopped' }}"
+  become: true

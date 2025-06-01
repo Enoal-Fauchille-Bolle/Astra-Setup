@@ -1,3 +1,6 @@
+filebrowser_enabled: false
 filebrowser_directory: /opt/filebrowser
 filebrowser_version: latest
 filebrowser_port: 8001
+filebrowser_user: user
+filebrowser_password: "password" # Replace with your actual user password"

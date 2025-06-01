@@ -2,4 +2,5 @@
   service:
     name: nextcloud
     state: restarted
+  when: nextcloud_enabled
   become: true

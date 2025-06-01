@@ -1,2 +1,3 @@
+npm_enabled: false
 npm_directory: /opt/npm
 npm_version: latest

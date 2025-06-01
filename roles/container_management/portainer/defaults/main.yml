@@ -1,3 +1,4 @@
+portainer_enabled: false
 portainer_directory: /opt/portainer
 portainer_version: latest
 portainer_port: 9443

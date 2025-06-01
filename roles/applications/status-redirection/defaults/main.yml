@@ -1,3 +1,4 @@
+status_redirection_enabled: false
 status_redirection_directory: /opt/status-redirection
 status_redirection_port: 3000
 status_redirection_url: "https://google.com"

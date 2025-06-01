@@ -2,4 +2,5 @@
   service:
     name: discord-redirection
     state: restarted
+  when: discord_redirection_enabled
   become: true

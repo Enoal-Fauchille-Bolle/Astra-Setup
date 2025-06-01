@@ -78,3 +78,11 @@
     group: root
   become: true
   notify: Restart MariaDB
+
+- name: Enable/Disable MariaDB service
+  systemd:
+    daemon_reload: true
+    name: mariadb
+    enabled: "{{ 'true' if mariadb_enabled else 'false' }}"
+    state: "{{ 'started' if mariadb_enabled else 'stopped' }}"
+  become: true

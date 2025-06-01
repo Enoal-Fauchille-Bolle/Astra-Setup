@@ -31,6 +31,7 @@ zsh_aliases:
 ############################# Proxy & Networking #############################
 
 # Nginx Proxy Manager
+npm_enabled: true
 npm_directory: /opt/npm
 npm_version: latest
 
@@ -41,6 +42,7 @@ npm_version: latest
 ################################# Databases #################################
 
 # MariaDB
+mariadb_enabled: true
 mariadb_user: azerty
 mariadb_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -58,6 +60,7 @@ mariadb_root_password: !vault |
           3033
 
 # PostgreSQL
+postgresql_enabled: true
 postgresql_version: 16
 postgresql_user: azerty
 postgresql_password: !vault |
@@ -78,6 +81,7 @@ postgresql_root_password: !vault |
 ############################# Storage & Backups #############################
 
 # Nextcloud
+nextcloud_enabled: true
 nextcloud_directory: /opt/nextcloud
 nextcloud_version: latest
 nextcloud_port: 8002
@@ -99,6 +103,7 @@ nextcloud_mysql_password: !vault |
           3033
 
 # Filebrowser
+filebrowser_enabled: false
 filebrowser_directory: /opt/filebrowser
 filebrowser_version: latest
 filebrowser_port: 8001
@@ -114,12 +119,14 @@ filebrowser_password: !vault |
 ############################ Container Management ############################
 
 # Portainer
+portainer_enabled: true
 portainer_directory: /opt/portainer
 portainer_version: latest
 portainer_port: 9443
 portainer_api_port: 8000
 
 # Jenkins
+jenkins_enabled: false
 jenkins_directory: /opt/jenkins
 jenkins_port: 8003
 jenkins_api_port: 8004
@@ -132,11 +139,13 @@ github_token: "***REMOVED***"
 ################################ Applications ################################
 
 # Discord Redirection
+discord_redirection_enabled: false
 discord_redirection_directory: /opt/discord-redirection
 discord_redirection_port: 50006
 discord_redirection_url: "https://discord.gg/AfwMAQMwKj"
 
 # Status Redirection
+status_redirection_enabled: false
 status_redirection_directory: /opt/status-redirection
 status_redirection_port: 50005
 status_redirection_url: "https://stats.uptimerobot.com/r7YZX5qGRN"
@@ -144,11 +153,13 @@ status_redirection_url: "https://stats.uptimerobot.com/r7YZX5qGRN"
 ############################# Monitoring & Logs #############################
 
 # Glances
+glances_enabled: true
 glances_directory: /opt/glances
 glances_version: latest-full
 glances_port: 61208
 
 # NTFY
+ntfy_enabled: false
 ntfy_directory: /opt/ntfy
 ntfy_version: latest
 ntfy_base_url: "http://localhost"
@@ -186,6 +197,7 @@ ntfy_private_key: !vault |
 
 ############################ Dashboard & Secrets ############################
 
+onetimesecret_enabled: false
 onetimesecret_directory: /opt/onetimesecret
 onetimesecret_version: latest
 onetimesecret_port: 50000

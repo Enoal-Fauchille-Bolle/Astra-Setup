@@ -2,4 +2,5 @@
   service:
     name: npm
     state: restarted
+  when: npm_enabled
   become: true

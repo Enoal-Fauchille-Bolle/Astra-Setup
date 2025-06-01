@@ -1,3 +1,4 @@
+ntfy_enabled: false
 ntfy_directory: /opt/ntfy
 ntfy_version: latest
 ntfy_base_url: "http://localhost"

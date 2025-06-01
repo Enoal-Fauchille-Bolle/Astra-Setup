@@ -2,4 +2,5 @@
   systemd:
     name: jenkins
     state: restarted
+  when: jenkins_enabled
   become: true

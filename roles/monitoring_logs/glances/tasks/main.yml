@@ -29,10 +29,10 @@
   notify: Restart Glances
   become: true
 
-- name: Enable and start Glances service
+- name: Enable/Disable Glances service
   systemd:
     daemon_reload: true
     name: glances
-    enabled: true
-    state: started
+    enabled: "{{ 'true' if glances_enabled else 'false' }}"
+    state: "{{ 'started' if glances_enabled else 'stopped' }}"
   become: true

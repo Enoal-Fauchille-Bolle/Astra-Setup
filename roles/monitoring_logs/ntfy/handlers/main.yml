@@ -2,4 +2,5 @@
   service:
     name: ntfy
     state: restarted
+  when: ntfy_enabled
   become: true
