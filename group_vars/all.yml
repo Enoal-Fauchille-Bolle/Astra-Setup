@@ -260,7 +260,7 @@ casaos_version: latest
 casaos_port: 8081
 
 # Homer
-homer_enabled: true
+homer_enabled: false
 homer_directory: /opt/homer
 homer_version: latest
 homer_port: 8082
