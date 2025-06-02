@@ -17,7 +17,7 @@ services:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
     env_file:
       - ./.env
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - my_network
 

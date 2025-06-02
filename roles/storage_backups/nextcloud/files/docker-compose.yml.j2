@@ -3,7 +3,7 @@ services:
   nextcloud:
     container_name: nextcloud
     image: nextcloud:{{ nextcloud_version }}
-    restart: always
+    restart: unless-stopped
     ports:
       - {{ nextcloud_port }}:80
     volumes:
@@ -21,7 +21,7 @@ services:
   db:
     image: mariadb
     container_name: nextcloud_db
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: {{ nextcloud_mysql_root_password }}
       MYSQL_DATABASE: {{ nextcloud_mysql_database }}

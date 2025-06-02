@@ -6,7 +6,7 @@ services:
     ports:
       - '{{ portainer_api_port }}:8000'
       - '{{ portainer_port }}:9443'
-    restart: always
+    restart: unless-stopped
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
       - 'portainer_data:/data'
