@@ -1,0 +1,38 @@
+- name: Create Uptime Kuma directory
+  file:
+    path: "{{ uptime_kuma_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Uptime Kuma port through UFW
+  ufw:
+    rule: allow
+    port: "{{ uptime_kuma_port }}"
+    proto: tcp
+    comment: "Uptime Kuma"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ uptime_kuma_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Uptime Kuma
+  become: true
+
+- name: Import Uptime Kuma service
+  template:
+    src: "{{ role_path }}/files/uptime-kuma.service.j2"
+    dest: "/etc/systemd/system/uptime-kuma.service"
+    mode: '0644'
+  notify: Restart Uptime Kuma
+  become: true
+
+- name: Enable/Disable Uptime Kuma service
+  systemd:
+    daemon_reload: true
+    name: uptime-kuma
+    enabled: "{{ 'true' if uptime_kuma_enabled else 'false' }}"
+    state: "{{ 'started' if uptime_kuma_enabled else 'stopped' }}"
+  become: true

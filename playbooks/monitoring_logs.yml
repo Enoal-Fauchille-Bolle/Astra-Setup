@@ -7,3 +7,8 @@
   hosts: all
   roles:
     - { role: monitoring_logs/ntfy, tags: [monitoring_logs, ntfy] }
+
+- name: Uptime Kuma
+  hosts: all
+  roles:
+    - { role: monitoring_logs/uptime_kuma, tags: [monitoring_logs, uptime_kuma] }

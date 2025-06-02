@@ -218,6 +218,12 @@ ntfy_private_key: !vault |
           34633035613332633464376132396566356237396639636366363737376162343234633337313964
           3933653330303563356465663863353038323132633039333335
 
+# Uptime Kuma
+uptime_kuma_enabled: false
+uptime_kuma_directory: /opt/uptime-kuma
+uptime_kuma_version: latest
+uptime_kuma_port: 3001
+
 ############################ Dashboard & Secrets ############################
 
 onetimesecret_enabled: false

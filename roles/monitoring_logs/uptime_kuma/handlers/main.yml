@@ -1,0 +1,6 @@
+- name: Restart Uptime Kuma
+  service:
+    name: uptime-kuma
+    state: restarted
+  when: uptime_kuma_enabled
+  become: true

@@ -1,0 +1,4 @@
+uptime_kuma_enabled: false
+uptime_kuma_directory: /opt/uptime-kuma
+uptime_kuma_version: latest
+uptime_kuma_port: 3001
