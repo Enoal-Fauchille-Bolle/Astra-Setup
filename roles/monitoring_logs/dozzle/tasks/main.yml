@@ -1,0 +1,53 @@
+- name: Create Dozzle directory
+  file:
+    path: "{{ dozzle_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Dozzle port through UFW
+  ufw:
+    rule: allow
+    port: "{{ dozzle_port }}"
+    proto: tcp
+    comment: "Dozzle"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ dozzle_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Dozzle
+  become: true
+
+- name: Create Dozzle data directory
+  file:
+    path: "{{ dozzle_directory }}/data"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Import Dozzle users file
+  template:
+    src: "{{ role_path }}/files/users.yml.j2"
+    dest: "{{ dozzle_directory }}/data/users.yml"
+    mode: '0644'
+  notify: Restart Dozzle
+  become: true
+
+- name: Import Dozzle service
+  template:
+    src: "{{ role_path }}/files/dozzle.service.j2"
+    dest: "/etc/systemd/system/dozzle.service"
+    mode: '0644'
+  notify: Restart Dozzle
+  become: true
+
+- name: Enable/Disable Dozzle service
+  systemd:
+    daemon_reload: true
+    name: dozzle
+    enabled: "{{ 'true' if dozzle_enabled else 'false' }}"
+    state: "{{ 'started' if dozzle_enabled else 'stopped' }}"
+  become: true

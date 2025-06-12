@@ -1,10 +1,10 @@
 name: uptime-kuma
 services:
   uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:{{ uptime_kuma_version }}
     restart: unless-stopped
     ports:
       - {{ uptime_kuma_port }}:3001
     volumes:
       - ./data:/app/data
-    container_name: uptime-kuma
-    image: louislam/uptime-kuma:{{ uptime_kuma_version }}

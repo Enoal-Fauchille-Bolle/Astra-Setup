@@ -224,6 +224,19 @@ uptime_kuma_directory: /opt/uptime-kuma
 uptime_kuma_version: latest
 uptime_kuma_port: 3001
 
+# Dozzle
+dozzle_enabled: true
+dozzle_directory: /opt/dozzle
+dozzle_version: latest
+dozzle_port: 3002
+dozzle_users:
+  # Generate users with:
+  # docker run -it --rm amir20/dozzle generate --name YourUsername --email your@email.com --password yourpassword yourusername
+  azerty:
+    email: enoal.fauchille@gmail.com
+    username: AZERTY44
+    password: $2a$11$SvlqSez5fCpJIwjRcsqs4.bwYdYyWfCszRxbrq/FIqD12b7Q05JxC
+
 ############################ Dashboard & Secrets ############################
 
 onetimesecret_enabled: false

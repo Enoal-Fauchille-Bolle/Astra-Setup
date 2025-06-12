@@ -1,0 +1,4 @@
+dozzle_enabled: false
+dozzle_directory: /opt/dozzle
+dozzle_version: latest
+dozzle_port: 8080

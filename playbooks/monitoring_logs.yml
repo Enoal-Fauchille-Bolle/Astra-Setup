@@ -12,3 +12,8 @@
   hosts: all
   roles:
     - { role: monitoring_logs/uptime_kuma, tags: [monitoring_logs, uptime_kuma] }
+
+- name: Dozzle
+  hosts: all
+  roles:
+    - { role: monitoring_logs/dozzle, tags: [monitoring_logs, dozzle] }

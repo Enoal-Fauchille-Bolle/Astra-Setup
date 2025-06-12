@@ -1,0 +1,9 @@
+users:
+{% for username, user_config in dozzle_users.items() %}
+  {{ username }}:
+    email: {{ user_config.email }}
+    name: {{ user_config.username }}
+    # Generate with docker run -it --rm amir20/dozzle generate --name {{ user_config.username }} --email {{ user_config.email }} --password yourpassword {{ username }}
+    password: {{ user_config.password }}
+    filter:
+{% endfor %}

@@ -1,0 +1,6 @@
+- name: Restart Dozzle
+  service:
+    name: dozzle
+    state: restarted
+  when: dozzle_enabled
+  become: true

@@ -1,0 +1,13 @@
+name: dozzle
+services:
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:{{ dozzle_version }}
+    restart: unless-stopped
+    ports:
+      - {{ dozzle_port }}:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
