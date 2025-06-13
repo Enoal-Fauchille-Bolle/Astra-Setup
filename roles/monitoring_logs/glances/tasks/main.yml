@@ -21,6 +21,42 @@
   notify: Restart Glances
   become: true
 
+- name: Import Nginx configuration for Glances
+  template:
+    src: "{{ role_path }}/files/nginx.conf.j2"
+    dest: "{{ glances_directory }}/nginx.conf"
+    mode: "0644"
+  notify: Restart Glances
+  become: true
+
+- name: Install python3-passlib for htpasswd module
+  apt:
+    name: python3-passlib
+    state: present
+    update_cache: yes
+  when: glances_auth_enabled
+  become: true
+
+- name: Create auth directory for .htpasswd file
+  file:
+    path: "{{ glances_directory }}/auth"
+    state: directory
+    mode: "0755"
+  when: glances_auth_enabled
+  become: true
+
+- name: Generate .htpasswd file for Glances
+  htpasswd:
+    path: "{{ glances_directory }}/auth/.htpasswd"
+    name: "{{ glances_user }}"
+    password: "{{ glances_password }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: glances_auth_enabled
+  notify: Restart Glances
+  become: true
+
 - name: Import Glances service
   template:
     src: "{{ role_path }}/files/glances.service.j2"

@@ -2,3 +2,7 @@ glances_enabled: false
 glances_directory: /opt/glances
 glances_version: latest-full
 glances_port: 61208
+glances_api_port: 61209
+glances_auth_enabled: true
+glances_user: user
+glances_password: "password" # Replace with your actual user password"

@@ -1,0 +1,50 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream glances_web {
+        server glances:61208;
+    }
+
+    upstream glances_api {
+        server glances:61209;
+    }
+
+    # Web interface server
+    server {
+        listen 80;
+        {% if glances_auth_enabled %}
+        auth_basic "Glances Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        {% endif %}
+
+        location / {
+            proxy_pass http://glances_web;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+
+    # API server
+    server {
+        listen 8080;
+        {% if glances_auth_enabled %}
+        auth_basic "Glances API Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        {% endif %}
+
+        location / {
+            proxy_pass http://glances_api/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}

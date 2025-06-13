@@ -1,12 +1,27 @@
 name: glances
 services:
+  nginx:
+    container_name: glances_nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "{{ glances_port }}:80"
+      - "{{ glances_api_port }}:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./auth/.htpasswd:/etc/nginx/.htpasswd:ro
+    networks:
+      - glances_network
+    depends_on:
+      - glances
+
   glances:
     image: nicolargo/glances:{{ glances_version }}
     container_name: glances
     restart: unless-stopped
-    ports:
-      - "{{ glances_port }}:61208"
-      - "{{ (glances_port | int) + 1 }}:61209"
+    expose:
+      - "61208"
+      - "61209"
     environment:
       - TZ=${TZ}
       - GLANCES_OPT=-w
@@ -14,3 +29,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock:ro
     pid: "host"
+    networks:
+      - glances_network
+
+networks:
+  glances_network:
+    driver: bridge
