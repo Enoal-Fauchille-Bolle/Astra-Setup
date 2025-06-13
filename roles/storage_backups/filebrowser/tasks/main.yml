@@ -22,10 +22,11 @@
   become: true
 
 - name: Create base files for Filebrowser
-  file:
-    path: "{{ filebrowser_directory }}/{{ item }}"
-    state: file
+  copy:
+    content: ""
+    dest: "{{ filebrowser_directory }}/{{ item }}"
     mode: "0644"
+    force: no
   with_items:
     - filebrowser.db
     - settings.json
