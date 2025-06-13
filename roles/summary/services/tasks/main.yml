@@ -35,12 +35,14 @@
                                     SERVICES SUMMARY
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-      {% for service in service_list -%}
-      {% if vars[service + '_enabled'] | default(false) -%}
-      ✅ {{ service }}
-      {% else -%}
-      ❌ {{ service }}
-      {% endif -%}
+      {% for service in service_list %}
+      {% if vars[service + '_enabled'] | default(false) %}
+      ✅ {{ service }}{% if vars[service + '_port'] is defined %} (Port {{ vars[service + '_port'] }}){% endif %}
+
+      {% else %}
+      ❌ {{ service }}{% if vars[service + '_port'] is defined %} (Port {{ vars[service + '_port'] }}){% endif %}
+
+      {% endif %}
       {% endfor %}
 
       📊 Total: {{ enabled_services | default([]) | length }} enabled / {{ disabled_services | default([]) | length }} disabled
