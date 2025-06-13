@@ -6,13 +6,19 @@
       - postgresql
       - nextcloud
       - filebrowser
+      - duplicati
       - portainer
       - jenkins
       - discord_redirection
       - status_redirection
       - glances
       - ntfy
+      - uptime_kuma
+      - dozzle
       - onetimesecret
+      - casaos
+      - homer
+      - cockpit
 
 - name: Build enabled services list
   set_fact:
