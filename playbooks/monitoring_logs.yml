@@ -17,3 +17,8 @@
   hosts: all
   roles:
     - { role: monitoring_logs/dozzle, tags: [monitoring_logs, dozzle] }
+
+- name: Netdata
+  hosts: all
+  roles:
+    - { role: monitoring_logs/netdata, tags: [monitoring_logs, netdata] }

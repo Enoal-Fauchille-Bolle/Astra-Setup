@@ -1,0 +1,7 @@
+netdata_enabled: false
+netdata_directory: /opt/netdata
+netdata_version: latest
+netdata_port: 19999
+netdata_auth_enabled: true
+netdata_user: user
+netdata_password: "password" # Replace with your actual user password"

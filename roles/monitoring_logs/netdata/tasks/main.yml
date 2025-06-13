@@ -1,0 +1,75 @@
+- name: Create Netdata directory
+  file:
+    path: "{{ netdata_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Netdata port through UFW
+  ufw:
+    rule: allow
+    port: "{{ netdata_port }}"
+    proto: tcp
+    comment: "Netdata"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ netdata_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Netdata
+  become: true
+
+- name: Import Nginx configuration for Netdata
+  template:
+    src: "{{ role_path }}/files/nginx.conf.j2"
+    dest: "{{ netdata_directory }}/nginx.conf"
+    mode: "0644"
+  notify: Restart Netdata
+  when: netdata_auth_enabled
+  become: true
+
+- name: Install python3-passlib for htpasswd module
+  apt:
+    name: python3-passlib
+    state: present
+    update_cache: yes
+  when: netdata_auth_enabled
+  become: true
+
+- name: Create auth directory for .htpasswd file
+  file:
+    path: "{{ netdata_directory }}/auth"
+    state: directory
+    mode: "0755"
+  when: netdata_auth_enabled
+  become: true
+
+- name: Generate .htpasswd file for Netdata
+  htpasswd:
+    path: "{{ netdata_directory }}/auth/.htpasswd"
+    name: "{{ netdata_user }}"
+    password: "{{ netdata_password }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Netdata
+  when: netdata_auth_enabled
+  become: true
+
+- name: Import Netdata service
+  template:
+    src: "{{ role_path }}/files/netdata.service.j2"
+    dest: "/etc/systemd/system/netdata.service"
+    mode: '0644'
+  notify: Restart Netdata
+  become: true
+
+- name: Enable/Disable Netdata service
+  systemd:
+    daemon_reload: true
+    name: netdata
+    enabled: "{{ 'true' if netdata_enabled else 'false' }}"
+    state: "{{ 'started' if netdata_enabled else 'stopped' }}"
+  become: true

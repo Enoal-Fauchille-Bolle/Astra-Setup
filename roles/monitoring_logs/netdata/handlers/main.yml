@@ -1,0 +1,6 @@
+- name: Restart Netdata
+  service:
+    name: netdata
+    state: restarted
+  when: netdata_enabled
+  become: true

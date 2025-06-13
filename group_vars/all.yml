@@ -238,6 +238,21 @@ dozzle_users:
     username: AZERTY44
     password: $2a$11$SvlqSez5fCpJIwjRcsqs4.bwYdYyWfCszRxbrq/FIqD12b7Q05JxC
 
+# Netdata
+netdata_enabled: false
+netdata_directory: /opt/netdata
+netdata_version: latest
+netdata_port: 19999
+netdata_auth_enabled: true
+netdata_user: azerty
+netdata_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          39303063323734393263656164333462643063326566643063346530313630303136306263343635
+          3536636232303033663139323633363539653432366531650a646634306236336563373939623437
+          37613130363566636362356662306164393339646230303233623135636638383135353563656636
+          3566663836303136330a646561636535353133343462613735356330373663336462386339643435
+          3033
+
 ############################ Dashboard & Secrets ############################
 
 onetimesecret_enabled: false
