@@ -33,8 +33,8 @@
   become: true
 
 - name: Import Nginx configuration for Filebrowser
-  copy:
-    src: "{{ role_path }}/files/nginx.conf"
+  template:
+    src: "{{ role_path }}/files/nginx.conf.j2"
     dest: "{{ filebrowser_directory }}/nginx.conf"
     mode: "0644"
   notify: Restart Filebrowser
@@ -45,6 +45,7 @@
     name: python3-passlib
     state: present
     update_cache: yes
+  when: filebrowser_auth_enabled
   become: true
 
 - name: Create auth directory for .htpasswd file
@@ -52,6 +53,7 @@
     path: "{{ filebrowser_directory }}/auth"
     state: directory
     mode: "0755"
+  when: filebrowser_auth_enabled
   become: true
 
 - name: Generate .htpasswd file for Filebrowser
@@ -63,6 +65,7 @@
     group: root
     mode: "0644"
   notify: Restart Filebrowser
+  when: filebrowser_auth_enabled
   become: true
 
 - name: Import Filebrowser service

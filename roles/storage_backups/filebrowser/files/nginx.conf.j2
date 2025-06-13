@@ -1,0 +1,26 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream filebrowser {
+        server filebrowser:80;
+    }
+
+    server {
+        listen 80;
+
+        {% if filebrowser_auth_enabled %}
+        auth_basic "FileBrowser Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        {% endif %}
+
+        location / {
+            proxy_pass http://filebrowser;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
