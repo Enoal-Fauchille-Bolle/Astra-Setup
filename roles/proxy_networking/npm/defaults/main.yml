@@ -1,3 +1,4 @@
 npm_enabled: false
+npm_port: 81
 npm_directory: /opt/npm
 npm_version: latest
