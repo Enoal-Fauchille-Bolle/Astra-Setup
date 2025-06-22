@@ -1,3 +1,8 @@
+- name: Crafty Controller
+  hosts: all
+  roles:
+    - { role: container_management/crafty, tags: [container_management, crafty] }
+
 - name: Portainer
   hosts: all
   roles:

@@ -1,0 +1,6 @@
+- name: Restart Crafty
+  service:
+    name: crafty
+    state: restarted
+  when: crafty_enabled
+  become: true

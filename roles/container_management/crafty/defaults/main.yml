@@ -1,0 +1,8 @@
+crafty_enabled: false
+crafty_directory: /opt/crafty
+crafty_version: latest
+crafty_port: 8443
+crafty_dynmap_port: 8123
+crafty_bedrock_port: 19132
+crafty_mc_port_range_start: 25500
+crafty_mc_port_range_end: 25600

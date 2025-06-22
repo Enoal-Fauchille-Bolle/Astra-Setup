@@ -142,6 +142,16 @@ duplicati_encryption_key: !vault |
 
 ############################ Container Management ############################
 
+# Crafty Controller
+crafty_enabled: true
+crafty_directory: /opt/crafty
+crafty_version: latest
+crafty_port: 8443
+crafty_dynmap_port: 8123
+crafty_bedrock_port: 19132
+crafty_mc_port_range_start: 25500
+crafty_mc_port_range_end: 25505
+
 # Portainer
 portainer_enabled: true
 portainer_directory: /opt/portainer

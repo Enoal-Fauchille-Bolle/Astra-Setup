@@ -1,0 +1,77 @@
+- name: Create Crafty directory
+  file:
+    path: "{{ crafty_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Allow Crafty individual ports through UFW
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    comment: "Crafty"
+  become: true
+  loop:
+    - "{{ crafty_port }}"
+    - "{{ crafty_dynmap_port }}"
+
+- name: Allow Crafty Bedrock port through UFW (UDP)
+  ufw:
+    rule: allow
+    port: "{{ crafty_bedrock_port }}"
+    proto: udp
+    comment: "Crafty Bedrock"
+  become: true
+
+- name: Allow Crafty Minecraft server port range through UFW
+  ufw:
+    rule: allow
+    port: "{{ crafty_mc_port_range_start }}:{{ crafty_mc_port_range_end }}"
+    proto: tcp
+    comment: "Crafty MC Servers"
+  become: true
+
+- name: Import docker-compose.yml
+  template:
+    src: "{{ role_path }}/files/docker-compose.yml.j2"
+    dest: "{{ crafty_directory }}/docker-compose.yml"
+    mode: '0644'
+  notify: Restart Crafty
+  become: true
+
+- name: Import Crafty service
+  template:
+    src: "{{ role_path }}/files/crafty.service.j2"
+    dest: "/etc/systemd/system/crafty.service"
+    mode: '0644'
+  notify: Restart Crafty
+  become: true
+
+- name: Enable/Disable Crafty service
+  systemd:
+    daemon_reload: true
+    name: crafty
+    enabled: "{{ 'true' if crafty_enabled else 'false' }}"
+    state: "{{ 'started' if crafty_enabled else 'stopped' }}"
+  become: true
+
+- name: Read Crafty default credentials
+  slurp:
+    src: "{{ crafty_directory }}/docker/config/default-creds.txt"
+  register: crafty_creds_file
+  become: true
+  when: crafty_enabled
+  ignore_errors: true
+
+- name: Display default credentials
+  debug:
+    msg: "Crafty default credentials are stored in: {{ crafty_directory }}/docker/config/default-creds.txt"
+  when: crafty_enabled and crafty_creds_file.failed
+
+- name: Display default credentials content
+  debug:
+    msg:
+    - "Crafty default credentials:"
+    - "{{ crafty_creds_file['content'] | b64decode | trim }}"
+  when: crafty_enabled and not crafty_creds_file.failed
