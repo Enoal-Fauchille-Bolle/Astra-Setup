@@ -21,52 +21,150 @@
   notify: Restart Filebrowser
   become: true
 
-- name: Create base files for Filebrowser
-  copy:
-    content: ""
-    dest: "{{ filebrowser_directory }}/{{ item }}"
-    mode: "0644"
-    force: no
-  with_items:
-    - filebrowser.db
-    - settings.json
-  become: true
+- name: Check if database is initialized
+  stat:
+    path: "{{ filebrowser_directory }}/.initialized"
+  register: filebrowser_initialized
 
-- name: Import Nginx configuration for Filebrowser
-  template:
-    src: "{{ role_path }}/files/nginx.conf.j2"
-    dest: "{{ filebrowser_directory }}/nginx.conf"
-    mode: "0644"
-  notify: Restart Filebrowser
-  become: true
-
-- name: Install python3-passlib for htpasswd module
-  apt:
-    name: python3-passlib
-    state: present
-    update_cache: yes
-  when: filebrowser_auth_enabled
-  become: true
-
-- name: Create auth directory for .htpasswd file
+- name: Remove empty database file if exists (for clean init)
   file:
-    path: "{{ filebrowser_directory }}/auth"
-    state: directory
-    mode: "0755"
-  when: filebrowser_auth_enabled
+    path: "{{ filebrowser_directory }}/filebrowser.db"
+    state: absent
   become: true
-
-- name: Generate .htpasswd file for Filebrowser
-  htpasswd:
-    path: "{{ filebrowser_directory }}/auth/.htpasswd"
-    name: "{{ filebrowser_user }}"
-    password: "{{ filebrowser_password }}"
-    owner: root
-    group: root
-    mode: "0644"
+  when: not filebrowser_initialized.stat.exists
   notify: Restart Filebrowser
-  when: filebrowser_auth_enabled
+
+- name: Initialize Filebrowser database (without config file)
+  docker_container:
+    name: filebrowser-init
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "config init --database=/database/filebrowser.db --port=80 --root=/srv --address=0.0.0.0"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
   become: true
+  when: not filebrowser_initialized.stat.exists
+  notify: Restart Filebrowser
+
+- name: Import Filebrowser settings configuration (after init)
+  template:
+    src: "{{ role_path }}/files/settings.json.j2"
+    dest: "{{ filebrowser_directory }}/settings.json"
+    mode: "0644"
+  become: true
+  when: not filebrowser_initialized.stat.exists
+  notify: Restart Filebrowser
+
+- name: Create custom admin user
+  docker_container:
+    name: filebrowser-adduser
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "users add {{ filebrowser_user }} {{ filebrowser_password }} --database=/database/filebrowser.db --perm.admin"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
+  become: true
+  when: not filebrowser_initialized.stat.exists
+  notify: Restart Filebrowser
+
+- name: Remove default admin user
+  docker_container:
+    name: filebrowser-rmuser
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "users rm admin --database=/database/filebrowser.db"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
+  become: true
+  when: not filebrowser_initialized.stat.exists
+  notify: Restart Filebrowser
+  ignore_errors: true
+
+- name: Mark database as initialized
+  file:
+    path: "{{ filebrowser_directory }}/.initialized"
+    state: touch
+    mode: "0644"
+  become: true
+  when: not filebrowser_initialized.stat.exists
+
+- name: Stop Filebrowser service temporarily for user update
+  systemd:
+    name: filebrowser
+    state: stopped
+  become: true
+  when: filebrowser_initialized.stat.exists and filebrowser_enabled
+  changed_when: false
+
+- name: Get current user details for ID 1
+  docker_container:
+    name: filebrowser-get-user
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "users ls --database=/database/filebrowser.db"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
+  become: true
+  when: filebrowser_initialized.stat.exists
+  register: filebrowser_current_users
+  changed_when: false
+  failed_when: false
+
+- name: Check if user ID 1 already has correct username
+  set_fact:
+    filebrowser_username_correct: "{{ filebrowser_current_users.container.Output | regex_search('\\s*1\\s+' + filebrowser_user + '\\s+') is not none }}"
+  when:
+    - filebrowser_initialized.stat.exists
+    - filebrowser_current_users.container.Output is defined
+
+- name: Update user ID 1 password (always update password for security)
+  docker_container:
+    name: filebrowser-update-password
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "users update 1 --password={{ filebrowser_password }} --database=/database/filebrowser.db"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
+  become: true
+  when: filebrowser_initialized.stat.exists
+  register: filebrowser_password_update
+  failed_when: filebrowser_password_update.status != 0
+  changed_when: false
+
+- name: Update user ID 1 username (only if different)
+  docker_container:
+    name: filebrowser-update-username
+    image: "filebrowser/filebrowser:{{ filebrowser_version }}"
+    command: "users update 1 --username={{ filebrowser_user }} --database=/database/filebrowser.db"
+    volumes:
+      - "{{ filebrowser_directory }}:/database"
+    cleanup: true
+    detach: false
+  become: true
+  when:
+    - filebrowser_initialized.stat.exists
+    - not (filebrowser_username_correct | default(false))
+  register: filebrowser_username_update
+  failed_when:
+    - filebrowser_username_update.status != 0
+    - "'already exists' not in (filebrowser_username_update.container.Output | default(''))"
+  changed_when: filebrowser_username_update.status == 0
+  notify: Restart Filebrowser
+
+- name: Ensure Filebrowser service is started after user update
+  systemd:
+    name: filebrowser
+    state: started
+  become: true
+  when:
+    - filebrowser_initialized.stat.exists
+    - filebrowser_enabled
+  changed_when: false
 
 - name: Import Filebrowser service
   template:

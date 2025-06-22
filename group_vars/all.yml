@@ -108,7 +108,6 @@ filebrowser_enabled: false
 filebrowser_directory: /opt/filebrowser
 filebrowser_version: latest
 filebrowser_port: 8001
-filebrowser_auth_enabled: true
 filebrowser_user: azerty
 filebrowser_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

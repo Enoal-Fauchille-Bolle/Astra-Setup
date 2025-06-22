@@ -1,25 +1,11 @@
 name: filebrowser
 services:
-  nginx:
-    container_name: filebrowser_nginx
-    image: nginx:alpine
-    restart: unless-stopped
-    ports:
-      - "{{ filebrowser_port }}:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./auth/.htpasswd:/etc/nginx/.htpasswd:ro
-    networks:
-      - filebrowser_network
-    depends_on:
-      - filebrowser
-
   filebrowser:
     image: filebrowser/filebrowser:{{ filebrowser_version }}
     container_name: filebrowser
     restart: unless-stopped
-    expose:
-      - "80"
+    ports:
+      - "{{ filebrowser_port }}:80"
     volumes:
       - /:/srv
       - ./filebrowser.db:/database/filebrowser.db
@@ -27,9 +13,3 @@ services:
     environment:
       - FB_DATABASE=/database/filebrowser.db
       - FB_CONFIG=/config/settings.json
-    networks:
-      - filebrowser_network
-
-networks:
-  filebrowser_network:
-    driver: bridge
