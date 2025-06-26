@@ -104,7 +104,7 @@ nextcloud_mysql_password: !vault |
           3033
 
 # Filebrowser
-filebrowser_enabled: false
+filebrowser_enabled: true
 filebrowser_directory: /opt/filebrowser
 filebrowser_version: latest
 filebrowser_port: 8001
@@ -118,7 +118,7 @@ filebrowser_password: !vault |
           3033
 
 # Duplicati
-duplicati_enabled: false
+duplicati_enabled: true
 duplicati_directory: /opt/duplicati
 duplicati_version: latest
 duplicati_port: 8200
@@ -160,7 +160,7 @@ portainer_port: 9443
 portainer_api_port: 8000
 
 # Jenkins
-jenkins_enabled: false
+jenkins_enabled: true
 jenkins_directory: /opt/jenkins
 jenkins_port: 8003
 jenkins_api_port: 8004
@@ -186,13 +186,13 @@ jenkins_github_token: !vault |
 ################################ Applications ################################
 
 # Discord Redirection
-discord_redirection_enabled: false
+discord_redirection_enabled: true
 discord_redirection_directory: /opt/discord-redirection
 discord_redirection_port: 50006
 discord_redirection_url: "https://discord.gg/AfwMAQMwKj"
 
 # Status Redirection
-status_redirection_enabled: false
+status_redirection_enabled: true
 status_redirection_directory: /opt/status-redirection
 status_redirection_port: 50005
 status_redirection_url: "https://stats.uptimerobot.com/r7YZX5qGRN"
@@ -216,7 +216,7 @@ glances_password: !vault |
           3033
 
 # NTFY
-ntfy_enabled: false
+ntfy_enabled: true
 ntfy_directory: /opt/ntfy
 ntfy_version: latest
 ntfy_base_url: "http://localhost"
@@ -253,7 +253,7 @@ ntfy_private_key: !vault |
           3933653330303563356465663863353038323132633039333335
 
 # Uptime Kuma
-uptime_kuma_enabled: false
+uptime_kuma_enabled: true
 uptime_kuma_directory: /opt/uptime-kuma
 uptime_kuma_version: latest
 uptime_kuma_port: 3001
@@ -272,7 +272,7 @@ dozzle_users:
     password: $2a$11$SvlqSez5fCpJIwjRcsqs4.bwYdYyWfCszRxbrq/FIqD12b7Q05JxC
 
 # Netdata
-netdata_enabled: false
+netdata_enabled: true
 netdata_directory: /opt/netdata
 netdata_version: latest
 netdata_port: 19999
@@ -288,7 +288,7 @@ netdata_password: !vault |
 
 ############################ Dashboard & Secrets ############################
 
-onetimesecret_enabled: false
+onetimesecret_enabled: true
 onetimesecret_directory: /opt/onetimesecret
 onetimesecret_version: latest
 onetimesecret_port: 50000
@@ -316,13 +316,13 @@ onetimesecret_global_secret: !vault |
           38353062643830336133
 
 # CasaOS
-casaos_enabled: false
+casaos_enabled: true
 casaos_directory: /opt/casaos
 casaos_version: latest
 casaos_port: 8081
 
 # Homer
-homer_enabled: false
+homer_enabled: true
 homer_directory: /opt/homer
 homer_version: latest
 homer_port: 8082
