@@ -1,0 +1,9 @@
+- name: Copy script template to /usr/local/bin
+  template:
+    src: nut-discord.sh.j2
+    dest: /usr/local/bin/nut-discord.sh
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  when: ups_enabled

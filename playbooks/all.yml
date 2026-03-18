@@ -1,4 +1,5 @@
 - import_playbook: base.yml
+- import_playbook: ups.yml
 - import_playbook: proxy_networking.yml
 - import_playbook: databases.yml
 - import_playbook: storage_backups.yml

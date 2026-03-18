@@ -1,0 +1,5 @@
+- name: Restart UPS
+  service:
+    name: nut
+    state: restarted
+  become: true

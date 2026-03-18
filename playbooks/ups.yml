@@ -1,0 +1,24 @@
+- name: Packages
+  hosts: all
+  roles:
+    - { role: ups/packages, tags: [ups, packages] }
+
+- name: Udev & USB
+  hosts: all
+  roles:
+    - { role: ups/udev, tags: [ups, udev] }
+
+- name: Custom Scripts
+  hosts: all
+  roles:
+    - { role: ups/scripts, tags: [ups, scripts] }
+
+- name: Configure NUT
+  hosts: all
+  roles:
+    - { role: ups/configure, tags: [ups, configure] }
+
+- name: Enable NUT Services
+  hosts: all
+  roles:
+    - { role: ups/services, tags: [ups, services] }

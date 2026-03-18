@@ -1,0 +1,43 @@
+- name: Deploy nut.conf
+  copy:
+    src: nut.conf
+    dest: /etc/nut/nut.conf
+    owner: root
+    group: nut
+    mode: '0640'
+  become: true
+  notify: Restart NUT
+  when: ups_enabled
+
+- name: Deploy ups.conf template
+  template:
+    src: ups.conf.j2
+    dest: /etc/nut/ups.conf
+    owner: root
+    group: nut
+    mode: '0640'
+  become: true
+  notify: Restart NUT
+  when: ups_enabled
+
+- name: Deploy upsd.users template
+  template:
+    src: upsd.users.j2
+    dest: /etc/nut/upsd.users
+    owner: root
+    group: nut
+    mode: '0640'
+  become: true
+  notify: Restart NUT
+  when: ups_enabled
+
+- name: Deploy upsmon.conf template
+  template:
+    src: upsmon.conf.j2
+    dest: /etc/nut/upsmon.conf
+    owner: root
+    group: nut
+    mode: '0640'
+  become: true
+  notify: Restart NUT
+  when: ups_enabled

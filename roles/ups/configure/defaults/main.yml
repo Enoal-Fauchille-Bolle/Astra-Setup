@@ -1,0 +1,6 @@
+ups_enabled: false
+ups_name: "ups"
+ups_description: "UPS"
+ups_shutdown_threshold: 40
+nut_user: user
+nut_password: password # Replace with your actual NUT user password

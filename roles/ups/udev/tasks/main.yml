@@ -1,0 +1,10 @@
+- name: Copy 99-nut-ups.rules to /etc/udev/rules.d/
+  copy:
+    src: 99-nut-ups.rules
+    dest: /etc/udev/rules.d/99-nut-ups.rules
+    owner: root
+    group: root
+    mode: "0664"
+  become: true
+  notify: Reload udev rules
+  when: ups_enabled

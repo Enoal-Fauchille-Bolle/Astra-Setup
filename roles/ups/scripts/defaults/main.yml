@@ -1,0 +1,4 @@
+ups_enabled: false
+ups_description: "UPS"
+ups_icon_url: ""
+discord_webhook_url: https://discord.com/api/webhooks/xxxxx/yyyyy # Replace with your actual Discord webhook URL
